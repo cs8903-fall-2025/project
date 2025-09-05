@@ -6,6 +6,8 @@ Before digging into development, you'll need to set things up.
 
 ### DevContainer
 
+Requirements: Containerization (i.e. Docker, OrbStack)
+
 The easiest way to get started is to use the included DevContainer configuration.
 
 1. Download and install [OrbStack](https://orbstack.dev) or [Docker](https://www.docker.com)
@@ -16,7 +18,9 @@ This will re-open the project in vs code with a remote connection to a docker co
 
 ### Local Development
 
-You can also develop on your own computer. Just install `node@22.19.0`. After installing Node, upgrade npm by running `npm install -g npm@11.6.0`.
+Requirements: NodeJS
+
+You can also develop on your own computer. Just install `node@22.16.0`. After installing Node, upgrade npm by running `npm install -g npm@11.6.0`.
 
 For local development it is recommended to use a version manager. This project is already configured with a `tool-versions` file compatible with [ASDF](https://asdf-vm.com) and [Mise](https://mise.jdx.dev). (ASDF is used in the DevContainer).
 
