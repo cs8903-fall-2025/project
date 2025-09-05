@@ -81,7 +81,7 @@ npm run preview -w=apps/website # previews website only
 
 This will build `apps/app` and `apps/website` for production and run them locally:
 
-- App preview on [http://localhost:8788](http://locahost:8788)
+- App preview on [http://localhost:4173](http://locahost:4173)
 - Website preview on [http://locahost:4321](http://localhost:4321)
 
 ## Deployment
