@@ -10,6 +10,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "format": "prettier --write .",
     "preview": "turbo preview"
   },
   "workspaces": [
@@ -17,6 +18,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "prettier": "^3.6.2",
     "turbo": "^2.5.6"
   }
 }
