@@ -6,3 +6,5 @@ node_modules
 
 # monorepo
 .turbo
+apps/**/*/package-lock.json
+packages/**/*/package-lock.json
