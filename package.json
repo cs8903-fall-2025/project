@@ -11,6 +11,8 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "format": "prettier --write .",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint --fix",
     "preview": "turbo preview"
   },
   "workspaces": [

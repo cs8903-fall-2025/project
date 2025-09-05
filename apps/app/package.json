@@ -4,6 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "preview": "wrangler pages dev",
     "deploy": "npm run build && wrangler pages deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
@@ -12,8 +14,11 @@
     "hono": "^4.9.6"
   },
   "devDependencies": {
+    "@hono/eslint-config": "1.1.1",
     "@hono/vite-build": "^1.2.0",
     "@hono/vite-dev-server": "^0.18.2",
+    "@repo/config-eslint": "*",
+    "eslint": "^9.34.0",
     "vite": "^6.3.5",
     "wrangler": "^4.4.0"
   }
