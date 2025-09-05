@@ -89,7 +89,7 @@ This will build `apps/app` and `apps/website` for production and run them locall
 Details coming soon
 
 - Cloudflare Pages should be super flexible for hosting both the app and the website
-- Cloudflare Page [supports monorepos](https://developers.cloudflare.com/pages/configuration/monorepos/) like this one
+- Cloudflare Pages [supports monorepos](https://developers.cloudflare.com/pages/configuration/monorepos/) like this one
 
 ## Troubleshooting
 
