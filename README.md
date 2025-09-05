@@ -22,7 +22,7 @@ For local development it is recommended to use a version manager. This project i
 
 ## Directory Structure
 
-This project is setup as a monorepo. The `apps` directory contains the executables: website and web app. The `packages` contains shared code. Apps and packages can import from packages. Apps should never import from other apps.
+This project is setup as a monorepo. The `apps` directory contains the executables: website and web app. The `packages` directory contains shared code. Apps and packages can import from packages. Apps should never import from other apps.
 
 ## Tooling
 
