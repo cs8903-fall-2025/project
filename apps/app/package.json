@@ -2,24 +2,19 @@
   "name": "app",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
-    "preview": "wrangler pages dev --ip 0.0.0.0",
-    "deploy": "npm run build && wrangler pages deploy",
+    "preview": "$npm_execpath run build && vite preview",
+    "deploy": "$npm_execpath run build && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
     "hono": "^4.9.6"
   },
   "devDependencies": {
-    "@hono/eslint-config": "1.1.1",
-    "@hono/vite-build": "^1.2.0",
-    "@hono/vite-dev-server": "^0.18.2",
-    "@repo/config-eslint": "*",
-    "eslint": "^9.34.0",
+    "@cloudflare/vite-plugin": "^1.2.3",
     "vite": "^6.3.5",
-    "wrangler": "^4.4.0"
+    "vite-ssr-components": "^0.5.1",
+    "wrangler": "^4.17.0"
   }
 }
