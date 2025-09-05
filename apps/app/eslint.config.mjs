@@ -6,6 +6,6 @@ export default [
   ...baseConfig,
   ...honoConfig,
   {
-    ignores: ['dist/**'],
+    ignores: ['.turbo', '.wrangler', 'dist/**', 'public'],
   },
 ]

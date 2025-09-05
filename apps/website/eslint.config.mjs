@@ -6,6 +6,6 @@ export default [
   ...baseConfig,
   ...astroBaseConfig.configs.recommended,
   {
-    ignores: ['dist/**'],
+    ignores: ['.astro', '.turbo', 'dist/**', 'public'],
   },
 ]
