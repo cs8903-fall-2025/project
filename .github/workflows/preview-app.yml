@@ -44,5 +44,5 @@ jobs:
         uses: moojing/cf-preview-bot@v1
         if: github.event_name == 'pull_request'
         with:
-          deployment_url: ${{ steps.preview.outputs.deployment-url }}
-          branch_preview_url: ${{ steps.preview.outputs.pages-deployment-alias-url }}
+          deployment_url: ${{ steps.deploy.outputs.deployment-url }}
+          branch_preview_url: ${{ steps.deploy.outputs.deployment-alias-url }}
