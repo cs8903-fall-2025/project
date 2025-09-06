@@ -31,6 +31,7 @@ jobs:
         run: npm run build
 
       - name: Deploy app to Cloudflare Workers
+        id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -45,7 +46,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const deployOutput = context.steps['Deploy app to Cloudflare Workers'].outputs.deployment-url;
+            const deployOutput = context.steps.deploy.outputs.deployment-url;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
