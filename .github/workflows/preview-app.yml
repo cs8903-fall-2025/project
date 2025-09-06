@@ -45,10 +45,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const deployOutput = context.steps.deploy_preview.outputs.deployment-url;
+            const deployOutput = steps.deploy_preview.outputs.deployment-url;
             github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              issue_number: issue.number,
+              owner: repo.owner,
+              repo: repo.repo,
               body: `🚀 Preview deployed to: ${deployOutput}`
             });
