@@ -2,9 +2,9 @@ name: Preview app on Cloudflare Workers
 
 on:
   pull_request:
-    paths:
-      - apps/app/**
-      - packages/**
+    #paths:
+    #  - apps/app/**
+    #  - packages/**
 
 jobs:
   preview_app:
@@ -43,4 +43,4 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           deployment_url: ${{ steps.preview.outputs.deployment-url }}
-          branch_deployment_url: ${{ steps.preview.outputs.pages-deployment-alias-url }}
+          branch_preview_url: 'https://${{ github.head_ref }}-${{ secrets.CLOUDFLARE_APP_DOMAIN }}'
