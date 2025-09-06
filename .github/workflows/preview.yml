@@ -1,12 +1,12 @@
-name: Deploy app to Cloudflare Workers
+name: Deploy preview to Cloudflare Workers
 
 on:
   pull_request:
     branches:
       - main
-    paths:
-      - apps/app/**
-      - packages/**
+    #paths:
+    #- apps/**
+    #- packages/**
 
 jobs:
   deploy_preview:
@@ -27,7 +27,7 @@ jobs:
         run: npm install
 
       - name: Build app
-        run: npm run build -w=apps/app
+        run: npm run build
 
       - name: Deploy app to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
@@ -37,6 +37,22 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           projectName: cs8903-odc-app
           workingDirectory: ./apps/app/dist
+
+      - name: Comment Preview URL on PR
+        uses: moojing/cf-preview-bot@v1
+        if: github.event_name == 'pull_request'
+        with:
+          deployment_url: ${{ steps.deploy_preview.outputs.deployment-url }}
+          branch_preview_url: ${{ steps.deploy_preview.outputs.pages-deployment-alias-url }}
+
+      - name: Deploy website to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          projectName: cs8903-odc-website
+          workingDirectory: ./apps/website/dist
 
       - name: Comment Preview URL on PR
         uses: moojing/cf-preview-bot@v1
