@@ -43,4 +43,4 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           deployment_url: ${{ steps.preview.outputs.deployment-url }}
-          branch_preview_url: 'https://${{ github.head_ref }}-${{ secrets.CLOUDFLARE_URL }}'
+          branch_preview_url: 'https://${{ github.head_ref }}-${{ secrets.CLOUDFLARE_WEBSITE_DOMAIN }}'
