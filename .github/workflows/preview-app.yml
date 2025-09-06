@@ -40,17 +40,9 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           workingDirectory: ./apps/app/dist
 
-      - name: Comment on PR with Preview URL
-        uses: actions/github-script@v8
+      - name: Comment Preview URL on PR
+        uses: moojing/cf-preview-bot@v1
         if: github.event_name == 'pull_request'
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            console.log(steps)
-            const deployOutput = context.steps.preview.outputs.deployment-url;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🚀 Preview deployed to: ${deployOutput}`
-            });
+          deployment_url: ${{ steps.preview.outputs.deployment-url }}
+          branch_preview_url: ${{ steps.preview.outputs.pages-deployment-alias-url }}
