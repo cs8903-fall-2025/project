@@ -6,7 +6,7 @@ const app = new Hono()
 app.use(renderer)
 
 app.get('/', (c) => {
-  return c.render(<h1>Coming soon...</h1>)
+  return c.render(<h1>Coming Soon</h1>)
 })
 
 export default app
