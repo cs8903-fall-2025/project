@@ -2,9 +2,9 @@ name: Preview app on Cloudflare Workers
 
 on:
   pull_request:
-    #paths:
-    #- apps/**
-    #- packages/**
+    paths:
+      - apps/**
+      - packages/**
 
 jobs:
   deploy_preview:
