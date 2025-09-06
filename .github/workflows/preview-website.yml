@@ -1,0 +1,46 @@
+name: Preview website on Cloudflare Workers
+
+on:
+  pull_request:
+    #paths:
+    #  - apps/website/**
+    #  - packages/**
+
+jobs:
+  preview_website:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build website
+        run: npm run build
+
+      - name: Deploy website to Cloudflare Workers
+        id: preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: 'versions upload --preview-alias ${{ github.head_ref }}'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          workingDirectory: ./apps/website/dist
+
+      - name: Comment Preview URL on PR
+        uses: moojing/cf-preview-bot@v1
+        if: github.event_name == 'pull_request'
+        with:
+          deployment_url: ${{ steps.preview.outputs.deployment-url }}
+          branch_deployment_url: '${{ github.head-ref }}-${{ secrets.CLOUDFLARE_URL }}'
