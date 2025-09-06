@@ -37,7 +37,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           projectName: cs8903-odc-app
-          workingDirectory: ./apps/app
+          workingDirectory: ./apps/app/dist
 
       - name: Comment Preview URL on PR
         uses: moojing/cf-preview-bot@v1
