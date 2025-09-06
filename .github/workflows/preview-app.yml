@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Build app
-        run: npm run build
+        run: npm run build -w=apps/app
 
       - name: Deploy app to Cloudflare Workers
         id: preview
