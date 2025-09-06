@@ -3,7 +3,8 @@
   "name": "cs8903-odc-app",
   "compatibility_date": "2025-09-06",
   "main": "./src/index.tsx",
+  "minify": true,
   "assets": {
-    "directory": "./public"
+    "directory": "./dist"
   }
 }
