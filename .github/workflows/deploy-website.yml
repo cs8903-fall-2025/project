@@ -9,7 +9,7 @@ on:
       - packages/**
 
 jobs:
-  deploy:
+  deploy_website:
     runs-on: ubuntu-latest
     permissions:
       contents: read
