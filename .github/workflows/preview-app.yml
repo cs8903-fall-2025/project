@@ -2,8 +2,6 @@ name: Preview app on Cloudflare Workers
 
 on:
   pull_request:
-    branches:
-      - main
     #paths:
     #- apps/**
     #- packages/**
