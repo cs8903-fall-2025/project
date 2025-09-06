@@ -32,4 +32,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: cs8903-odc-website
-          directory: ./apps/website/dist
+          workingDirectory: ./apps/website/dist
