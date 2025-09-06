@@ -1,9 +1,10 @@
-name: Deploy to Cloudflare Workers
+name: Deploy website to Cloudflare Workers
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - apps/website/**
+      - packages/**
 
 jobs:
   deploy:
@@ -26,7 +27,7 @@ jobs:
       - name: Build website
         run: npm run build -w=apps/website
 
-      - name: Deploy to Cloudflare Workers
+      - name: Deploy website to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
