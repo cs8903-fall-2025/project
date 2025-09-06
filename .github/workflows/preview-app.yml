@@ -1,4 +1,4 @@
-name: Deploy preview to Cloudflare Workers
+name: Preview app on Cloudflare Workers
 
 on:
   pull_request:
