@@ -1,4 +1,4 @@
-name: Preview website on Cloudflare Workers
+name: Preview app on Cloudflare Workers
 
 on:
   pull_request:
@@ -23,7 +23,7 @@ jobs:
           node-version: '22.16.0'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build website
         run: npm run build -w=apps/website
@@ -34,12 +34,13 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: 'versions upload --preview-alias ${{ github.head_ref }}'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          workingDirectory: ./apps/website/dist
+          workingDirectory: ./apps/app/dist
 
       - name: Comment Preview URL on PR
         uses: moojing/cf-preview-bot@v1
         if: github.event_name == 'pull_request'
         with:
           deployment_url: ${{ steps.preview.outputs.deployment-url }}
-          branch_preview_url: 'https://${{ github.head_ref }}-${{ secrets.CLOUDFLARE_URL }}'
+          branch_deployment_url: ${{ steps.preview.outputs.alias }}

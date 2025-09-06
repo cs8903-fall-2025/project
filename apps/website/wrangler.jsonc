@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cs8903-odc-website",
+  "preview_urls": true,
   // Update to today's date
   "compatibility_date": "2025-09-05",
   "assets": {
