@@ -3,7 +3,7 @@ name: Preview app on Cloudflare Workers
 on:
   pull_request:
     paths:
-      - apps/**
+      - apps/app/**
       - packages/**
 
 jobs:
