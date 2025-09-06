@@ -1,4 +1,4 @@
-name: Preview app on Cloudflare Workers
+name: Preview website on Cloudflare Workers
 
 on:
   pull_request:
