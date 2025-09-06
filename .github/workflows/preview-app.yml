@@ -46,6 +46,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log(context)
             const deployOutput = context.steps.preview.outputs.deployment-url;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
