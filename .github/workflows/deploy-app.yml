@@ -1,0 +1,36 @@
+name: Deploy website to Cloudflare Workers
+
+on:
+  push:
+    paths:
+      - apps/app/**
+      - packages/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run build -w=apps/app
+
+      - name: Deploy app to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: cs8903-odc-app
+          workingDirectory: ./apps/app/dist
