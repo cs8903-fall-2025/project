@@ -2,6 +2,8 @@ name: Deploy website to Cloudflare Workers
 
 on:
   push:
+    branches:
+      - main
     paths:
       - apps/website/**
       - packages/**
