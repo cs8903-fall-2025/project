@@ -1,11 +1,98 @@
 ---
-import Welcome from '../components/Welcome.astro';
+//import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const title = "Disconnected but Smart: TinyML for Sustainable AI Deployment";
+const subtitle = "Literature Survey and Offline AI-Powered Automated Grading Systems for Resource-Constrained Environments";
+
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={title} description={subtitle}>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>{title}</h1>
+        <p class="subtitle">{subtitle}</p>
+      </div>
+    </div>
+  </header>
+
+  
+  <nav>
+    <div class="container">
+      <div class="nav-container">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#literature-review" class="nav-link">Literature Review</a>
+        <a href="#proof-of-concept" class="nav-link">Proof of Concept</a>
+        <a href="#dashboard" class="nav-link">Results Dashboard</a>
+				<a href="#dashboard" class="nav-link">Demo Video</a>
+      
+      </div>
+    </div>
+  </nav>
+ 
+
+  <main class="container">
+    <section id="overview" class="section">
+      <h2 class="section-title">Project Overview</h2>
+      <div class="section-content">
+        <p>This research project explores the potential of TinyML to revolutionize educational assessment in resource-constrained environments. Our work focuses on developing offline, automated grading systems that can operate without reliable internet connectivity while maintaining privacy, cost-effectiveness, and sustainability.</p>
+        <p>The project addresses the critical need for accessible educational technology solutions that can function in diverse global contexts, from rural schools with limited infrastructure to privacy-conscious institutions seeking to keep student data local.</p>
+      </div>
+    </section>
+
+    <section id="literature-review" class="section">
+      <h2 class="section-title">Literature Review</h2>
+      <div class="section-content">
+        <p>Our comprehensive literature review examines the current state of TinyML applications in educational contexts, analyzing the hardware and software ecosystem while identifying research gaps in offline AI assessment tools.</p>
+      </div>
+
+      <div class="research-questions">
+        <div class="question-card">
+          <div class="question-number">RQ1 -What is the current state of the TinyML hardware and software ecosystem?</div>
+        </div>
+        <div class="question-card">
+          <div class="question-number">RQ2 - How do existing modules compare in terms of performance, energy consumption, and cost effectiveness?</div>
+        </div>
+        <div class="question-card">
+          <div class="question-number">RQ3 - What specific technical requirements and constraints must be addressed to adapt TinyML systems to educational outcomes such as automated assessment tasks?</div>
+        </div>
+      </div>
+
+      <div class="section-content" style="margin-top: 2rem;">
+        <p><strong>Research Tools:</strong> Zotero for references, Rayyan for screening/extraction, and LaTeX/Overleaf for documentation.</p>
+      </div>
+    </section>
+
+    <section id="proof-of-concept" class="section">
+      <h2 class="section-title">Proof of Concept</h2>
+      <div class="section-content">
+        <p>We are developing a functional demonstration of automated grading using TinyML/Edge AI devices. The system captures images of student homework, converts handwriting to text using OCR, and evaluates responses against predefined rubric in offline mode with modest computational resources.</p>
+      </div>
+
+      <div class="poc-options">
+        <div class="poc-card">
+          <div class="poc-title">Web Application</div>
+          <p>Offline webpage based homework grading application</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="section">
+      <h2 class="section-title">Result Dashboard</h2>
+			<div class="demo-placeholder">
+        <div class="demo-text">Result Dashboard Coming Soon</div>
+        <p>Literature Review Results Dashboard - Device Cost Range, Power Consumption, TinyML Applications</p>
+      </div>
+    </section>
+
+    <section id="demo" class="section">
+      <h2 class="section-title">Live Demo</h2>
+      <div class="demo-placeholder">
+        <div class="demo-text">Interactive Demo Coming Soon</div>
+        <p>Upload a sample homework image and see real-time OCR processing and rubric-based evaluation.</p>
+      </div>
+    </section>
+  </main>
+
 </Layout>
