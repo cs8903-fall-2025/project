@@ -23,7 +23,13 @@ jobs:
           node-version: '22.16.0'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Lint app
+        run: npm run lint -w=apps/app
+
+      - name: Test app
+        run: npm run test -w=apps/app
 
       - name: Build app
         run: npm run build -w=apps/app
