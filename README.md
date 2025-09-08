@@ -95,6 +95,11 @@ Details coming soon
 - Cloudflare Pages should be super flexible for hosting both the app and the website
 - Cloudflare Pages [supports monorepos](https://developers.cloudflare.com/pages/configuration/monorepos/) like this one
 
+## Live in Production
+
+- [website](https://cs8903-odc-website.nkenyeres3.workers.dev)
+- [app](https://cs8903-odc-app.nkenyeres3.workers.dev)
+
 ## Troubleshooting
 
 ### Nothing is running on the documented port
