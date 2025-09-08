@@ -22,6 +22,9 @@
       "persistent": true,
       "cache": false,
       "dependsOn": ["build"]
+    },
+    "test": {
+      "cache": false
     }
   }
 }

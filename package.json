@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "lint": "turbo lint",
     "lint:fix": "turbo lint -- --fix",
-    "preview": "turbo preview"
+    "preview": "turbo preview",
+    "test": "turbo test"
   },
   "workspaces": [
     "apps/*",
