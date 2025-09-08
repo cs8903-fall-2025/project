@@ -90,10 +90,10 @@ This will build `apps/app` and `apps/website` for production and run them locall
 
 ## Deployment
 
-Details coming soon
-
-- Cloudflare Pages should be super flexible for hosting both the app and the website
-- Cloudflare Pages [supports monorepos](https://developers.cloudflare.com/pages/configuration/monorepos/) like this one
+- If changes to the packages or the app are merged into the main branch, the application is automatically deployed to the Cloudflare workers platform.
+- If changes to the packages or the website are merged into the main branch, the website is automatically deployed to the Cloudflare workers platform.
+- Pull requests that have changes to the packages or app will automatically deploy staging environments and include a link to the staging url in the comments on the pull request.
+- Pull requests that have changes to the packages or website will automatically deploy staging environments and include a link to the staging url in the comments on the pull request.
 
 ## Live in Production
 
