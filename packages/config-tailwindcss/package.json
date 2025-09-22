@@ -3,12 +3,10 @@
   "description": "Shared TailwindCSS config",
   "exports": {
     "./globals.css": "./globals.css",
-    "./postcss.config": "./postcss.config",
-    "./tailwind.config": "./tailwind.config"
+    "./tailwind": "./tailwind.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13"
   }
 }
