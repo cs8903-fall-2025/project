@@ -18,7 +18,10 @@
     "@cloudflare/vite-plugin": "^1.2.3",
     "@hono/eslint-config": "1.1.1",
     "@repo/config-eslint": "*",
+    "@repo/config-tailwindcss": "*",
+    "@tailwindcss/vite": "^4.1.13",
     "eslint": "^9.34.0",
+    "tailwindcss": "^4.1.13",
     "vite": "^6.3.5",
     "vite-ssr-components": "^0.5.1",
     "wrangler": "^4.17.0"
