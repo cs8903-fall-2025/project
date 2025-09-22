@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   // Leave content empty. Paths will be defined in apps/packages
   content: [],
   theme: {
