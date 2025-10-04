@@ -2,8 +2,8 @@
 const { status } = Astro.props
 ---
 <span class:list={[
-  status === 'in progress' && 'border-amber-200 bg-amber-50 text-amber-800',
-  status !== 'in progress' && 'border-pink-200 bg-pink-50 text-pink-800',
+  status === 'in progress' && 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200',
+  status !== 'in progress' && 'border-pink-200 dark:border-pink-800 bg-pink-50 dark:bg-pink-950 text-pink-800 dark:text-pink-200',
   'inline-flex align-center justify-center border rounded-md text-xs py-0 px-1 uppercase mt-1'
 ]}>
   {status}
