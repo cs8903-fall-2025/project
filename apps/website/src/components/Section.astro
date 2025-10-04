@@ -1,0 +1,11 @@
+---
+import Badge from './Badge.astro'
+
+const { id, status, title } = Astro.props
+---
+<section id={id}>
+  <h2 class="flex items-center gap-1 text-2xl font-medium text-slate-900 dark:text-slate-100">{title}{Boolean(status) && <Badge status={status} />}</h2>
+  <div class="prose prose-slate dark:prose-invert">
+    <slot />
+  </div>
+</section>

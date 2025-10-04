@@ -1,102 +1,70 @@
 ---
-//import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro'
 
-const title = "Disconnected but Smart: TinyML for Sustainable AI Deployment";
-const subtitle = "Literature Survey and Offline AI-Powered Automated Grading Systems for Resource-Constrained Environments";
-
+import Layout from '../layouts/Layout.astro'
 ---
 
-<Layout title={title} description={subtitle}>
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <h1 class="text-3xl font-bold underline text-gray-500">{title}</h1>
-        <p class="subtitle">{subtitle}</p>
-      </div>
-    </div>
-  </header>
-
-  
-  <nav>
-    <div class="container">
-      <div class="nav-container">
-        <a href="#overview" class="nav-link">Overview</a>
-        <a href="#literature-review" class="nav-link">Literature Review</a>
-        <a href="#proof-of-concept" class="nav-link">Proof of Concept</a>
-        <a href="#dashboard" class="nav-link">Results Dashboard</a>
-				<a href="#dashboard" class="nav-link">Demo Video</a>
-      
-      </div>
+<Layout title="Disconnect, but smart" subtitle="TinyML for sustainable AI deployment"> 
+  <nav aria-label="Table of Contents" class="mb-6">
+    <div class="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 border flex gap-1 rounded-md py-2 px-4">
+      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#overview"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Overview</span></a>
+      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#literature-review"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Lit Review</span></a>
+      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#dashboard"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Results</span></a>
+      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#proof-of-concept"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">POC</span></a>
+      <a class="flex-1 text-center text-slate-600 dark:text-slate-400" href="#demo" class="nav-link"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Demo</span></a>
     </div>
   </nav>
- 
 
-  <main class="container">
-    <section id="overview" class="section">
-      <h2 class="section-title">Project Overview</h2>
-      <div class="section-content">
+  <main class="container space-y-8">
+    <Section id="overview" title="Project Overview">
         <p>This research project explores the potential of TinyML to revolutionize educational assessment in resource-constrained environments. Our work focuses on developing offline, automated grading systems that can operate without reliable internet connectivity while maintaining privacy, cost-effectiveness, and sustainability.</p>
         <p>The project addresses the critical need for accessible educational technology solutions that can function in diverse global contexts, from rural schools with limited infrastructure to privacy-conscious institutions seeking to keep student data local.</p>
-      </div>
-    </section>
+    </Section>
 
-    <section id="literature-review" class="section">
-      <h2 class="section-title">Literature Review</h2>
-      <div class="section-content">
-        <p>Our comprehensive literature review examines the current state of TinyML applications in educational contexts, analyzing the hardware and software ecosystem while identifying research gaps in offline AI assessment tools.</p>
-      </div>
+    <Section id="literature-review" title="Literature Review" status="in progress">
+      <p>Our comprehensive literature review examines the current state of TinyML applications in educational contexts, analyzing the hardware and software ecosystem while identifying research gaps in offline AI assessment tools.</p>
+      <h3>Research Questions</h3>
+      <ul>
+        <li>
+          <strong>RQ1</strong> &mdash; What is the current state of the TinyML hardware and software ecosystem?
+        </li>
+        <li>
+          <strong>RQ2</strong> &mdash; How do existing modules compare in terms of performance, energy consumption, and cost effectiveness?
+        </li>
+        <li>
+          <strong>RQ3</strong> &mdash; What specific technical requirements and constraints must be addressed to adapt TinyML systems to educational outcomes such as automated assessment tasks?
+        </li>
+      </ul>
+      <h3>Research Tools</h3>
+      <ul>
+        <li>
+          <strong>
+            <a href="https://www.zotero.org" rel="noopener norefferrer nofollow">Zotero</a>
+          </strong> &mdash; A reference manager for collecting, organizing, annotating, citing and sharing research
+        </li>
+        <li>
+          <strong>
+            <a href="https://www.rayyan.ai" rel="noopener norefferrer nofollow">Rayyan</a>
+          </strong> &mdash; An collaborative online systematic literature review for paper screening and data extraction
+        </li>
+        <li>
+          <strong>
+            <a href="https://www.overleaf.com" rel="noopener norefferrer nofollow">Overleaf</a>
+          </strong> &mdash; A collaborative online <a href="https://www.latex-project.org">LaTex</a> editor for coauthoring a paper
+        </li>
+      </ul>
+    </Section>
 
-      <div class="research-questions">
-        <div class="question-card">
-          <div class="question-number">RQ1 -What is the current state of the TinyML hardware and software ecosystem?</div>
-        </div>
-        <div class="question-card">
-          <div class="question-number">RQ2 - How do existing modules compare in terms of performance, energy consumption, and cost effectiveness?</div>
-        </div>
-        <div class="question-card">
-          <div class="question-number">RQ3 - What specific technical requirements and constraints must be addressed to adapt TinyML systems to educational outcomes such as automated assessment tasks?</div>
-        </div>
-      </div>
-
-      <div class="section-content" style="margin-top: 2rem;">
-        <p><strong>Research Tools:</strong> Zotero for references, Rayyan for screening/extraction, and LaTeX/Overleaf for documentation.</p>
-      </div>
-    </section>
-
-    <section id="proof-of-concept" class="section">
-      <h2 class="section-title">Proof of Concept</h2>
-      <div class="section-content">
+    <Section id="proof-of-concept" title="Proof of Concept" status="in progress">
         <p>We are developing a functional demonstration of automated grading using TinyML/Edge AI devices. The system captures images of student homework, converts handwriting to text using OCR, and evaluates responses against predefined rubric in offline mode with modest computational resources.</p>
-      </div>
+    </Section>
 
-      <div class="poc-options">
-        <div class="poc-card">
-          <div class="poc-title">Web Application</div>
-          <p>
-            <a href="https://cs8903-odc-app.nkenyeres3.workers.dev">
-              Offline webpage based homework grading application
-            </a>
-          </p>
-        </div>
-      </div>
-    </section>
+    <Section id="dashboard" title="Results Dashboard" status="coming soon">
+      <p>Literature Review Results Dashboard - Device Cost Range, Power Consumption, TinyML Applications</p>
+    </Section>
 
-    <section id="dashboard" class="section">
-      <h2 class="section-title">Result Dashboard</h2>
-			<div class="demo-placeholder">
-        <div class="demo-text">Result Dashboard Coming Soon</div>
-        <p>Literature Review Results Dashboard - Device Cost Range, Power Consumption, TinyML Applications</p>
-      </div>
-    </section>
-
-    <section id="demo" class="section">
-      <h2 class="section-title">Live Demo</h2>
-      <div class="demo-placeholder">
-        <div class="demo-text">Interactive Demo Coming Soon</div>
-        <p>Upload a sample homework image and see real-time OCR processing and rubric-based evaluation.</p>
-      </div>
-    </section>
+    <Section id="demo" title="Demo Video" status="coming soon">
+      <p>Upload a sample homework image and see real-time OCR processing and rubric-based evaluation.</p>
+    </Section>
   </main>
-
 </Layout>

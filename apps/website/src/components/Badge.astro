@@ -1,0 +1,10 @@
+---
+const { status } = Astro.props
+---
+<span class:list={[
+  status === 'in progress' && 'border-amber-200 bg-amber-50 text-amber-800',
+  status !== 'in progress' && 'border-pink-200 bg-pink-50 text-pink-800',
+  'inline-flex align-center justify-center border rounded-md text-xs py-0 px-1 uppercase mt-1'
+]}>
+  {status}
+</span>
