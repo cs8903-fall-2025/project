@@ -1,19 +1,20 @@
 ---
 import Section from '../components/Section.astro'
+import TableOfContents from '../components/TableOfContents.astro'
 
 import Layout from '../layouts/Layout.astro'
 ---
 
-<Layout title="Disconnect, but smart" subtitle="TinyML for sustainable AI deployment"> 
-  <nav aria-label="Table of Contents" class="mb-6">
-    <div class="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 border flex gap-1 rounded-md py-2 px-4">
-      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#overview"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Overview</span></a>
-      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#literature-review"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Lit Review</span></a>
-      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#dashboard"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Results</span></a>
-      <a class="border-r border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400" href="#proof-of-concept"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">POC</span></a>
-      <a class="flex-1 text-center text-slate-600 dark:text-slate-400" href="#demo" class="nav-link"><span class="text-pink-700 dark:text-pink-300">#</span> <span class="underline">Demo</span></a>
-    </div>
-  </nav>
+<Layout title="Disconnect, but smart" subtitle="TinyML for sustainable AI deployment">
+  <TableOfContents links={
+    [
+      {href: '#overview', label: 'Overview' },
+      {href: '#literature-review', label: 'Lit Review'},
+      {href: '#dashboard', label: 'Dashboard'},
+      {href: '#proof-of-concept', label: 'POC'},
+      {href: '#demo', label: 'Demo'},
+    ]
+  } />
 
   <main class="space-y-8">
     <Section id="overview" title="Project Overview">
@@ -55,16 +56,16 @@ import Layout from '../layouts/Layout.astro'
       </ul>
     </Section>
 
+    <Section id="dashboard" title="Results Dashboard" status="coming soon">
+      <p>We are a developing a literature review results dashboard to present device cost range, power consumption, and TinyML applications.</p>
+    </Section>
+
     <Section id="proof-of-concept" title="Proof of Concept" status="in progress">
         <p>We are developing a functional demonstration of automated grading using TinyML/Edge AI devices. The system captures images of student homework, converts handwriting to text using OCR, and evaluates responses against predefined rubric in offline mode with modest computational resources.</p>
     </Section>
 
-    <Section id="dashboard" title="Results Dashboard" status="coming soon">
-      <p>Literature Review Results Dashboard - Device Cost Range, Power Consumption, TinyML Applications</p>
-    </Section>
-
     <Section id="demo" title="Demo Video" status="coming soon">
-      <p>Upload a sample homework image and see real-time OCR processing and rubric-based evaluation.</p>
+      <p>A demo video of the proof of concept will demonstrate ingesting a sample homework image and seeing real-time OCR processing and rubric-based evaluation.</p>
     </Section>
   </main>
 </Layout>

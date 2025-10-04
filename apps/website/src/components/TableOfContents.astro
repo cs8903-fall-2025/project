@@ -1,0 +1,15 @@
+---
+const { links } = Astro.props
+const lastLinkIndex = links.length - 1
+---
+
+<nav aria-label="Table of Contents" class="mb-6">
+  <div class="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 border flex gap-1 rounded-md py-2 px-4">
+    {links.map((link: { href: string, label: string }, index: number) => (
+        <a class:list={[index !== lastLinkIndex && 'border-r', 'border-slate-700 flex-1 text-center text-slate-600 dark:text-slate-400']} href={link.href}>
+          <span class="text-pink-700 dark:text-pink-300">#</span> 
+          <span class="underline">{link.label}</span>
+        </a>
+    ))}
+  </div>
+</nav>
