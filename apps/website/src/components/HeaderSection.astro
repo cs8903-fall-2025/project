@@ -1,8 +1,8 @@
 ---
 const { isHiddenOnMobile = false, title, } = Astro.props
 ---
-<section class={`${isHiddenOnMobile ? 'hidden lg:block' : undefined}`}>
-  <h2 class="flex gap-1 items-center text-sm font-medium text-slate-900 dark:text-slate-100">
+<section class:list={[isHiddenOnMobile && 'hidden lg:block', 'block border-t border-slate-200 lg:border-0']}>
+  <h2 class="hidden lg:flex gap-1 items-center text-sm font-medium text-slate-900 dark:text-slate-100">
     <div class="text-pink-700 dark:text-pink-300 *:size-4">
       <slot name="icon" />
     </div>

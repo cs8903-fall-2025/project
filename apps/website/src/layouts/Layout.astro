@@ -15,9 +15,9 @@ const { title, subtitle } = Astro.props
 		<title>{title} | {subtitle}</title>
 	</head>
 	<body class="flex min-h-full bg-white dark:bg-slate-900">
-		<div class="full">
+		<div class="w-screen">
 			<Header />
-			<main class="border-t border-slate-200 dark:border-slate-700 pb-10 pt-10 pr-10 lg:relative lg:mb-28 lg:ml-122 lg:border-t-0 xl:ml-120 max-w-4xl">
+			<main class="border-t border-slate-200 dark:border-slate-700 p-5 lg:pl-0 lg:pb-10 lg:pt-10 lg:pr-10 lg:relative lg:mb-28 lg:ml-122 lg:border-t-0 xl:ml-120 max-w-4xl">
 				<slot />
 			</main>
 		</div>
