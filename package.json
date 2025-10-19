@@ -8,6 +8,7 @@
     "deploy": "turbo deploy",
     "dev": "turbo dev",
     "format": "prettier --write .",
+    "generate:component": "npx shadcn@latest",
     "lint": "turbo lint",
     "lint:fix": "turbo lint -- --fix",
     "lint:monorepo": "sherif",
