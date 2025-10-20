@@ -18,7 +18,8 @@ export default defineConfig({
   adapter: cloudflare(),
   integrations: [
     AstroPWA({
-      mode: 'development',
+      // eslint-disable-next-line turbo/no-undeclared-env-vars
+      mode: import.meta.env.PROD ? 'production' : 'development',
       base: '/',
       scope: '/',
       includeAssets: ['favicon.svg'],
@@ -30,6 +31,7 @@ export default defineConfig({
       workbox: {
         navigateFallback: '/',
         globPatterns: ['**/*.{css,js,html,svg,png,ico,txt}'],
+        globIgnores: ['**/_worker.js/**/*', '_worker.js'],
       },
       devOptions: {
         enabled: true,
