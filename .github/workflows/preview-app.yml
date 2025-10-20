@@ -38,7 +38,7 @@ jobs:
         run: npm run build -w=apps/app
 
       - name: Pin Wrangler version
-        run: npm install -g wrangler@3.62.0
+        run: npm install -g wrangler@4.42.0
 
       - name: Deploy app to Cloudflare Workers
         id: preview
