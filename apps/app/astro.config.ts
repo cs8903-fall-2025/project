@@ -4,7 +4,6 @@ import { fileURLToPath } from 'url'
 import { defineConfig } from 'astro/config'
 
 import AstroPWA from '@vite-pwa/astro'
-import cloudflare from '@astrojs/cloudflare'
 import tailwindcss from '@tailwindcss/vite'
 
 import react from '@astrojs/react'
@@ -15,7 +14,6 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default defineConfig({
-  adapter: cloudflare(),
   integrations: [
     AstroPWA({
       // eslint-disable-next-line turbo/no-undeclared-env-vars
