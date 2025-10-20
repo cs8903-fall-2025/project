@@ -37,6 +37,9 @@ jobs:
       - name: Build website
         run: npm run build -w=apps/website
 
+      - name: Pin Wrangler version
+        run: npm install -g wrangler@4.42.0
+
       - name: Deploy website to Cloudflare Workers
         id: preview
         uses: cloudflare/wrangler-action@v3
