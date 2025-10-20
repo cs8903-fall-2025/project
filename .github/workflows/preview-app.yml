@@ -37,13 +37,16 @@ jobs:
       - name: Build app
         run: npm run build -w=apps/app
 
+      - name: Pin Wrangler version
+        run: npm install -g wrangler@3.62.0
+
       - name: Deploy app to Cloudflare Workers
         id: preview
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: 'deploy --branch ${{ github.head_ref }}'
+          command: 'versions upload --preview-alias ${{ github.head_ref }}'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           workingDirectory: ./apps/app/dist
 
