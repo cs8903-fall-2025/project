@@ -1,17 +1,21 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*",
-    "node_modules/vite-plugin-pwa/client.d.ts"
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.worker.json"
+    }
   ],
-  "exclude": ["dist"],
   "compilerOptions": {
     "baseUrl": ".",
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["./worker-configuration.d.ts"]
   }
 }
