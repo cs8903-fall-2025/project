@@ -10,7 +10,7 @@ import { globalIgnores } from 'eslint/config'
 /** @type {import('eslint').Linter.Config} */
 export default [
   ...baseConfig,
-  globalIgnores(['dev-dist', 'dist']),
+  globalIgnores(['routeTree.gen.ts', 'dev-dist', 'dist']),
   js.configs.recommended,
   ...tseslint.configs.recommended,
   reactHooks.configs['recommended-latest'],
