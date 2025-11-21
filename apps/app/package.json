@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "npm run build && vite preview",
+    "test": "echo \"No tests yet\" && exit 0",
     "deploy": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types"
   },
