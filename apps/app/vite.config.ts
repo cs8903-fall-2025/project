@@ -1,6 +1,8 @@
 import path from 'path'
+import { fileURLToPath } from 'url'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
+import type { PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
@@ -23,10 +25,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
     }),
     cloudflare(),
-  ],
+  ] as unknown as PluginOption[],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(path.dirname(fileURLToPath(import.meta.url)), './src'),
     },
   },
 })
