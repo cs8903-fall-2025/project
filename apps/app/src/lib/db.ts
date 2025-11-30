@@ -2,6 +2,7 @@ import {
   createRxDatabase,
   toTypedRxJsonSchema,
   type ExtractDocumentTypeFromTypedRxJsonSchema,
+  type KeyFunctionMap,
   type RxCollection,
   type RxDatabase,
   type RxDocument,
@@ -11,7 +12,7 @@ import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie'
 import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression'
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv'
 
-const assessmentsSchemaLiteral = {
+const assessmentSchemaLiteral = {
   title: 'assessments schema',
   description: 'Assessments of students',
   version: 0,
@@ -38,15 +39,27 @@ const assessmentsSchemaLiteral = {
   indexes: ['studentId'],
 } as const
 
-const assessmentSchemaTyped = toTypedRxJsonSchema(assessmentsSchemaLiteral)
+export const assessmentSchemaTyped = toTypedRxJsonSchema(
+  assessmentSchemaLiteral,
+)
+
 export type AssessmentDocType = ExtractDocumentTypeFromTypedRxJsonSchema<
   typeof assessmentSchemaTyped
 >
+
 export const assessmentSchema: RxJsonSchema<AssessmentDocType> =
-  assessmentSchemaTyped
+  assessmentSchemaLiteral
 export type AssessmentDocument = RxDocument<AssessmentDocType>
 
-export type AssessmentCollection = RxCollection<AssessmentDocType>
+export type AssessmentDocumentMethods = KeyFunctionMap
+
+export type AssessmentCollectionMethods = KeyFunctionMap
+
+export type AssessmentCollection = RxCollection<
+  AssessmentDocType,
+  AssessmentDocumentMethods,
+  AssessmentCollectionMethods
+>
 
 export type AppDatabaseCollections = {
   assessments: AssessmentCollection
@@ -55,6 +68,9 @@ export type AppDatabaseCollections = {
 export type AppDatabase = RxDatabase<AppDatabaseCollections>
 
 let db: AppDatabase | null = null
+
+const assessmentDocumentMethods: AssessmentDocumentMethods = {}
+const assessmentCollectionMethods: AssessmentCollectionMethods = {}
 
 export async function openDatabase() {
   if (db) {
@@ -85,6 +101,8 @@ export async function openDatabase() {
   await db.addCollections({
     assessments: {
       schema: assessmentSchema,
+      methods: assessmentDocumentMethods,
+      statics: assessmentCollectionMethods,
     },
   })
 
