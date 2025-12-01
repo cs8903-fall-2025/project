@@ -16,7 +16,7 @@ function RootComponent() {
           }}
           activeOptions={{ exact: true }}
         >
-          Home
+          Assessments
         </Link>{' '}
         <Link
           to="/assessments/new"
