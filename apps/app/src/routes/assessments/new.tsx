@@ -71,7 +71,7 @@ function RouteComponent() {
       ],
     },
   })
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, insert, remove, move } = useFieldArray({
     control: form.control,
     name: 'questions',
   })
@@ -82,6 +82,15 @@ function RouteComponent() {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   )
+
+  function addQuestion(index: number) {
+    insert(index + 1, {
+      question: '',
+      answer: '',
+      rules: '',
+      points: 0,
+    })
+  }
 
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -101,7 +110,10 @@ function RouteComponent() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 px-2 py-4"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -145,87 +157,90 @@ function RouteComponent() {
             items={fields}
             strategy={verticalListSortingStrategy}
           >
-            {fields.map((field, index) => (
-              <SortableItem key={field.id} id={field.id}>
-                <FormField
-                  control={form.control}
-                  name={`questions.${index}.question`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Question {index + 1}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`questions.${index}.answer`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Answer</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`questions.${index}.rules`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Rules</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`questions.${index}.points`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Points</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {fields.length > 1 && (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={() => remove(index)}
-                  >
-                    Remove
-                  </Button>
-                )}
-              </SortableItem>
-            ))}
+            <div className="space-y-6">
+              {fields.map((field, index) => (
+                <SortableItem
+                  className="bg-gray-100 space-y-6 px-2 py-4 rounded-lg"
+                  key={field.id}
+                  id={field.id}
+                >
+                  <FormField
+                    control={form.control}
+                    name={`questions.${index}.question`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Question {index + 1}</FormLabel>
+                        <FormControl>
+                          <Input {...field} className="bg-white" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`questions.${index}.answer`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Answer</FormLabel>
+                        <FormControl>
+                          <Input {...field} className="bg-white" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`questions.${index}.rules`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Rules</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} className="bg-white" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`questions.${index}.points`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Points</FormLabel>
+                        <FormControl>
+                          <Input {...field} className="bg-white" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => addQuestion(index)}
+                    >
+                      Add another
+                    </Button>
+                    {fields.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => remove(index)}
+                        className="ml-auto"
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                </SortableItem>
+              ))}
+            </div>
           </SortableContext>
         </DndContext>
-        <Button
-          type="button"
-          onClick={() =>
-            append({
-              question: '',
-              answer: '',
-              rules: '',
-              points: 0,
-            })
-          }
-        >
-          Add
-        </Button>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Create assessment</Button>
       </form>
     </Form>
   )

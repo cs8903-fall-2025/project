@@ -15,17 +15,19 @@ export function SortableItem(
     transition,
   }
 
+  const { children, className } = props
+
   return (
     <div ref={setNodeRef} style={style} className="flex gap-2 items-start">
       <button
         type="button"
-        className="cursor-grab active:cursor-grabbing mt-2"
+        className="cursor-grab active:cursor-grabbing mt-3"
         {...attributes}
         {...listeners}
       >
         <GripVertical className="h-5 w-5 text-muted-foreground" />
       </button>
-      <div className="flex-1">{props.children}</div>
+      <div className={`flex-1 ${className}`}>{children}</div>
     </div>
   )
 }
