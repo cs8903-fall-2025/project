@@ -1,7 +1,7 @@
 {
   "name": "cs8903-odc-project",
   "description": "GA Tech CS 8903 ODC Project",
-  "packageManager": "npm@11.6.0",
+  "packageManager": "npm@11.6.2",
   "private": true,
   "scripts": {
     "build": "turbo build",
