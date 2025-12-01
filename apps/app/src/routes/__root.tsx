@@ -7,7 +7,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <>
+    <div className="p-6">
       <div className="p-2 flex gap-2 text-lg">
         <Link
           to="/"
@@ -29,6 +29,6 @@ function RootComponent() {
       </div>
       <Outlet />
       <TanStackRouterDevtools position="bottom-right" />
-    </>
+    </div>
   )
 }
