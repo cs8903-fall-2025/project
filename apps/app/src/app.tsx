@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 
@@ -14,8 +13,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-export function App({ onDestroy }: { onDestroy: () => void }) {
-  useEffect(() => onDestroy)
-
+export function App() {
   return <RouterProvider router={router} />
 }
