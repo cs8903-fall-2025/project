@@ -34,8 +34,28 @@ const assessmentSchemaLiteral = {
       type: 'string',
       maxLength: 100,
     },
+    questions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          question: {
+            type: 'string',
+          },
+          answer: {
+            type: 'string',
+          },
+          rules: {
+            type: 'string',
+          },
+          points: {
+            type: 'number',
+          },
+        },
+      },
+    },
   },
-  required: ['assessmentId', 'name', 'studentId'],
+  required: ['assessmentId', 'name', 'studentId', 'questions'],
   indexes: ['studentId'],
 } as const
 
@@ -118,9 +138,9 @@ export async function openDatabase() {
    * Test insert
    *
   const assessment = await db.assessments.insert({
-    assessmentId: '123',
+    assessmentId: crypto.randomUUID(),
     name: 'My Assessment',
-    studentId: '123',
+    studentId: crypto.randomUUID(),
   })
   */
 
