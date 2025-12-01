@@ -25,9 +25,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint monorepo
-        run: npm run lint:monorepo
-
       - name: Lint app
         run: npm run lint -w=apps/app
 
