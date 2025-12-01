@@ -39,14 +39,16 @@ const formSchema = z.object({
   name: z.string().min(2).max(255),
   description: z.string(),
   studentId: z.string().max(100),
-  questions: z.array(
-    z.object({
-      question: z.string(),
-      answer: z.string(),
-      rules: z.string(),
-      points: z.number(),
-    }),
-  ),
+  questions: z
+    .array(
+      z.object({
+        question: z.string().min(2),
+        answer: z.string().min(2),
+        rules: z.string().min(2),
+        points: z.number().min(2),
+      }),
+    )
+    .min(1),
 })
 
 type FormSchema = z.infer<typeof formSchema>
@@ -59,7 +61,14 @@ function RouteComponent() {
       name: '',
       description: '',
       studentId: crypto.randomUUID() as string,
-      questions: [],
+      questions: [
+        {
+          question: '',
+          answer: '',
+          rules: '',
+          points: 0,
+        },
+      ],
     },
   })
   const { fields, append, remove, move } = useFieldArray({
@@ -147,6 +156,7 @@ function RouteComponent() {
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -159,6 +169,7 @@ function RouteComponent() {
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -171,6 +182,7 @@ function RouteComponent() {
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -183,16 +195,19 @@ function RouteComponent() {
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => remove(index)}
-                >
-                  Remove
-                </Button>
+                {fields.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => remove(index)}
+                  >
+                    Remove
+                  </Button>
+                )}
               </SortableItem>
             ))}
           </SortableContext>
