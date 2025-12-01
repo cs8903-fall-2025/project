@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { openDatabase, closeDatabase } from './lib/db'
+import { openDatabase } from './lib/db'
 import { initAssessmentsCollection } from './collections/assessments'
 import { App } from './app'
 
@@ -17,7 +17,7 @@ const element = document.getElementById('root')
 if (element) {
   createRoot(element).render(
     <StrictMode>
-      <App onDestroy={closeDatabase} />
+      <App />
     </StrictMode>,
   )
 } else {

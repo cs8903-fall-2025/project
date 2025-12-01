@@ -8,6 +8,11 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   const assessments = useFetchAssessments()
-  console.log(assessments)
-  return <div>Hello World!</div>
+  return (
+    <ul>
+      {assessments.map((assessment) => (
+        <div>{assessment.name}</div>
+      ))}
+    </ul>
+  )
 }

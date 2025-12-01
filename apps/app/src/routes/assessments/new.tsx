@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -29,6 +29,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import type { DragEndEvent } from '@dnd-kit/core'
+import { getAssessmentsCollection } from '../../collections/assessments'
 
 export const Route = createFileRoute('/assessments/new')({
   component: RouteComponent,
@@ -45,7 +46,7 @@ const formSchema = z.object({
         question: z.string().min(2),
         answer: z.string().min(2),
         rules: z.string().min(2),
-        points: z.number().min(2),
+        points: z.coerce.number(),
       }),
     )
     .min(1),
@@ -54,6 +55,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 function RouteComponent() {
+  const navigate = useNavigate()
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,7 +68,7 @@ function RouteComponent() {
           question: '',
           answer: '',
           rules: '',
-          points: 0,
+          points: 1,
         },
       ],
     },
@@ -88,7 +90,7 @@ function RouteComponent() {
       question: '',
       answer: '',
       rules: '',
-      points: 0,
+      points: 1,
     })
   }
 
@@ -105,7 +107,12 @@ function RouteComponent() {
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    const assessments = getAssessmentsCollection()
+    // TODO: Handle errors
+    assessments.insert(values)
+    navigate({
+      to: '/',
+    })
   }
 
   return (
@@ -210,7 +217,11 @@ function RouteComponent() {
                       <FormItem>
                         <FormLabel>Points</FormLabel>
                         <FormControl>
-                          <Input {...field} className="bg-white" />
+                          <Input
+                            {...field}
+                            className="bg-white"
+                            type="number"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
