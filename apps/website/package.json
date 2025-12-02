@@ -6,7 +6,7 @@
     "dev": "astro dev --host 0.0.0.0",
     "build": "astro build",
     "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "pnpm lint -- --fix",
     "preview": "astro preview --host 0.0.0.0",
     "test": "echo \"No tests yet\" && exit 0",
     "astro": "astro"
@@ -16,8 +16,8 @@
     "astro": "^5.13.5"
   },
   "devDependencies": {
-    "@repo/config-eslint": "*",
-    "@repo/config-tailwindcss": "*",
+    "@repo/config-eslint": "workspace:*",
+    "@repo/config-tailwindcss": "workspace:*",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.13",
     "eslint": "^9.34.0",
