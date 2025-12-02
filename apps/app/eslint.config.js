@@ -14,7 +14,6 @@ export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   reactHooks.configs['recommended-latest'],
-  reactRefresh.configs.vite,
   jsxA11y.flatConfigs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
