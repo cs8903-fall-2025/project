@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssessmentsNewRouteImport } from './routes/assessments/new'
+import { Route as AssessmentsAssessmentIdRouteImport } from './routes/assessments/$assessmentId'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -28,34 +29,48 @@ const AssessmentsNewRoute = AssessmentsNewRouteImport.update({
   path: '/assessments/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssessmentsAssessmentIdRoute = AssessmentsAssessmentIdRouteImport.update({
+  id: '/assessments/$assessmentId',
+  path: '/assessments/$assessmentId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
   '/assessments/new': typeof AssessmentsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
   '/assessments/new': typeof AssessmentsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
   '/assessments/new': typeof AssessmentsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/assessments/new'
+  fullPaths: '/' | '/about' | '/assessments/$assessmentId' | '/assessments/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/assessments/new'
-  id: '__root__' | '/' | '/about' | '/assessments/new'
+  to: '/' | '/about' | '/assessments/$assessmentId' | '/assessments/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/assessments/$assessmentId'
+    | '/assessments/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AssessmentsAssessmentIdRoute: typeof AssessmentsAssessmentIdRoute
   AssessmentsNewRoute: typeof AssessmentsNewRoute
 }
 
@@ -82,12 +97,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssessmentsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assessments/$assessmentId': {
+      id: '/assessments/$assessmentId'
+      path: '/assessments/$assessmentId'
+      fullPath: '/assessments/$assessmentId'
+      preLoaderRoute: typeof AssessmentsAssessmentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AssessmentsAssessmentIdRoute: AssessmentsAssessmentIdRoute,
   AssessmentsNewRoute: AssessmentsNewRoute,
 }
 export const routeTree = rootRouteImport

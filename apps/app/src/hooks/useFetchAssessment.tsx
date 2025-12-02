@@ -1,17 +1,15 @@
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { getAssessmentsCollection } from '../collections/assessments'
 
-export function useFetchAssessments({ archived }: { archived: boolean }) {
+export function useFetchAssessment({ assessmentId }: { assessmentId: string }) {
   const { data: assessments } = useLiveQuery(
     (q) => {
       return q
         .from({ assessment: getAssessmentsCollection() })
-        .where(({ assessment }) => eq(assessment.archived, archived))
-        .orderBy(({ assessment }) => {
-          return assessment.name
-        }, 'desc')
+        .where(({ assessment }) => eq(assessment.assessmentId, assessmentId))
+        .findOne()
     },
-    [archived],
+    [assessmentId],
   )
   return assessments
 }

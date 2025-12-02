@@ -8,6 +8,8 @@ import {
   type RxDocument,
   type RxJsonSchema,
 } from 'rxdb'
+import { addRxPlugin } from 'rxdb/plugins/core'
+import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder'
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie'
 import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression'
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv'
@@ -99,8 +101,8 @@ export async function openDatabase() {
 
   const { DEV = false } = import.meta.env as unknown as { DEV?: boolean }
 
+  addRxPlugin(RxDBQueryBuilderPlugin)
   if (DEV) {
-    const { addRxPlugin } = await import('rxdb/plugins/core')
     const { RxDBDevModePlugin } = await import('rxdb/plugins/dev-mode')
     addRxPlugin(RxDBDevModePlugin)
   }
