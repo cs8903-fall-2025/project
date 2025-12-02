@@ -22,20 +22,25 @@ jobs:
         with:
           node-version: '24.11.1'
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint monorepo
-        run: npm run lint:monorepo
+        run: pnpm run lint:monorepo
 
       - name: Lint website
-        run: npm run lint -w=apps/website
+        run: pnpm run --filter=website lint
 
       - name: Test website
-        run: npm run test -w=apps/website
+        run: pnpm run --filter=website test
 
       - name: Build website
-        run: npm run build -w=apps/website
+        run: pnpm run --filter=website build
 
       - name: Pin Wrangler version
         run: npm install -g wrangler@4.42.0

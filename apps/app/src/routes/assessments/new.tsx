@@ -46,7 +46,7 @@ const formSchema = z.object({
         question: z.string().min(2),
         answer: z.string().min(2),
         rules: z.string().min(2),
-        points: z.coerce.number(),
+        points: z.number(),
       }),
     )
     .min(1),
@@ -56,7 +56,8 @@ type FormSchema = z.infer<typeof formSchema>
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const form = useForm<FormSchema>({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const form = useForm<FormSchema, any, FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       assessmentId: crypto.randomUUID() as string,
@@ -106,7 +107,7 @@ function RouteComponent() {
     move(oldIndex, newIndex)
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: FormSchema) {
     const assessments = getAssessmentsCollection()
     // TODO: Handle errors
     assessments.insert(values)
@@ -221,6 +222,9 @@ function RouteComponent() {
                             {...field}
                             className="bg-white"
                             type="number"
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />

@@ -1,12 +1,14 @@
 {
   "name": "cs8903-odc-project",
   "description": "GA Tech CS 8903 ODC Project",
-  "packageManager": "npm@11.6.2",
+  "packageManager": "pnpm@9.15.2",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "deploy": "turbo deploy",
     "dev": "turbo dev",
+    "dev:app": "pnpm --filter=pwa dev",
+    "dev:website": "pnpm --filter=website dev",
     "format": "prettier --write .",
     "generate:component": "cd apps/app && npx shadcn@latest add",
     "lint": "turbo lint",
@@ -16,10 +18,6 @@
     "preview": "turbo preview",
     "test": "turbo test"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "devDependencies": {
     "prettier": "^3.6.2",
     "sherif": "^1.6.1",
