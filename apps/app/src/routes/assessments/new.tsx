@@ -36,10 +36,10 @@ export const Route = createFileRoute('/assessments/new')({
 })
 
 const formSchema = z.object({
+  archived: z.boolean(),
   assessmentId: z.string().max(100),
   name: z.string().min(2).max(255),
   description: z.string(),
-  studentId: z.string().max(100),
   questions: z
     .array(
       z.object({
@@ -60,10 +60,10 @@ function RouteComponent() {
   const form = useForm<FormSchema, any, FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      archived: false,
       assessmentId: crypto.randomUUID() as string,
       name: '',
       description: '',
-      studentId: crypto.randomUUID() as string,
       questions: [
         {
           question: '',

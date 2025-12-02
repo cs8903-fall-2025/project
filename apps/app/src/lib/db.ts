@@ -30,9 +30,8 @@ const assessmentSchemaLiteral = {
     name: {
       type: 'string',
     },
-    studentId: {
-      type: 'string',
-      maxLength: 100,
+    archived: {
+      type: 'boolean',
     },
     questions: {
       type: 'array',
@@ -55,8 +54,7 @@ const assessmentSchemaLiteral = {
       },
     },
   },
-  required: ['assessmentId', 'name', 'studentId', 'questions'],
-  indexes: ['studentId'],
+  required: ['assessmentId', 'name', 'questions'],
 } as const
 
 export const assessmentSchemaTyped = toTypedRxJsonSchema(
