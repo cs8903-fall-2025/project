@@ -33,19 +33,19 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint monorepo
-        run: pnpm run lint:monorepo
+        run: pnpm lint:monorepo
 
       - name: Lint website
-        run: pnpm run --filter=website lint
+        run: pnpm --filter=website lint
 
       - name: Test website
-        run: pnpm run --filter=website test
+        run: pnpm --filter=website test
 
       - name: Build website
-        run: pnpm run --filter=website build
+        run: pnpm --filter=website build
 
       - name: Pin Wrangler version
-        run: npm install -g wrangler@4.42.0
+        run: pnpm add -g wrangler@4.42.0
 
       - name: Deploy website to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
