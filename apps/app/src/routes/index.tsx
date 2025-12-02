@@ -52,7 +52,7 @@ function Index() {
     <>
       <div className="flex items-baseline space-between w-full">
         <div className="flex-1 mb-6">
-          <h1 className="text-2xl text-gray-900 font-semibold">Assessments</h1>
+          <h2 className="text-2xl text-gray-900 font-semibold">Assessments</h2>
           <Badge
             variant={archiveStatus === 'Archived' ? 'destructive' : 'secondary'}
           >
