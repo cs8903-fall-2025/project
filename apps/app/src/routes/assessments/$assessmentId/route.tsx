@@ -1,9 +1,12 @@
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
-import { useFetchAssessment } from '@/hooks/useFetchAssessment'
-import { useFetchSubmissions } from '@/hooks/useFetchSubmissions'
-
-import { Button } from '@/components/ui/button'
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useMatchRoute,
+} from '@tanstack/react-router'
 import { House, Slash } from 'lucide-react'
+import { useFetchAssessment } from '@/hooks/useFetchAssessment'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/assessments/$assessmentId')({
   component: RouteComponent,
@@ -12,7 +15,11 @@ export const Route = createFileRoute('/assessments/$assessmentId')({
 function RouteComponent() {
   const { assessmentId } = Route.useParams()
   const assessment = useFetchAssessment({ assessmentId })
-  const submissions = useFetchSubmissions(assessmentId)
+  const matchRoute = useMatchRoute()
+  const isOnNewSubmission = matchRoute({
+    to: '/assessments/$assessmentId/submissions/new',
+    params: { assessmentId },
+  })
 
   if (!assessment) {
     return null
@@ -37,14 +44,35 @@ function RouteComponent() {
             <div className="flex items-center">
               <Slash className="text-muted-foreground size-3" />
               <Link
-                aria-current="page"
-                className="ml-1 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="ml-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 to={`/assessments/${assessmentId}`}
+                activeProps={{
+                  className: 'font-semibold',
+                  'aria-current': 'page',
+                }}
+                activeOptions={{ exact: true }}
               >
                 Submissions
               </Link>
             </div>
           </li>
+          {isOnNewSubmission && (
+            <li>
+              <div className="flex items-center">
+                <Slash className="text-muted-foreground size-3" />
+                <Link
+                  className="ml-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  to={`/assessments/${assessmentId}/submissions/new`}
+                  activeProps={{
+                    className: 'font-semibold',
+                    'aria-current': 'page',
+                  }}
+                >
+                  Upload Submission
+                </Link>
+              </div>
+            </li>
+          )}
         </ol>
       </nav>
       <article>
@@ -57,14 +85,18 @@ function RouteComponent() {
               <p className="text-muted-foreground">{assessment.description}</p>
             )}
           </div>
-          <div>
-            <Button>Upload submission</Button>
-          </div>
+          {!isOnNewSubmission && (
+            <div>
+              <Button asChild>
+                <Link to={`/assessments/${assessmentId}/submissions/new`}>
+                  Upload submission
+                </Link>
+              </Button>
+            </div>
+          )}
         </header>
         <div>
-          {submissions.map((submission) => (
-            <div>{submission.submissionId}</div>
-          ))}
+          <Outlet />
         </div>
       </article>
     </>

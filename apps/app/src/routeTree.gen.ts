@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssessmentsNewRouteImport } from './routes/assessments/new'
-import { Route as AssessmentsAssessmentIdRouteImport } from './routes/assessments/$assessmentId'
+import { Route as AssessmentsAssessmentIdRouteRouteImport } from './routes/assessments/$assessmentId/route'
+import { Route as AssessmentsAssessmentIdIndexRouteImport } from './routes/assessments/$assessmentId/index'
+import { Route as AssessmentsAssessmentIdSubmissionsNewRouteImport } from './routes/assessments/$assessmentId/submissions/new'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -29,48 +31,79 @@ const AssessmentsNewRoute = AssessmentsNewRouteImport.update({
   path: '/assessments/new',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AssessmentsAssessmentIdRoute = AssessmentsAssessmentIdRouteImport.update({
-  id: '/assessments/$assessmentId',
-  path: '/assessments/$assessmentId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AssessmentsAssessmentIdRouteRoute =
+  AssessmentsAssessmentIdRouteRouteImport.update({
+    id: '/assessments/$assessmentId',
+    path: '/assessments/$assessmentId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AssessmentsAssessmentIdIndexRoute =
+  AssessmentsAssessmentIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AssessmentsAssessmentIdRouteRoute,
+  } as any)
+const AssessmentsAssessmentIdSubmissionsNewRoute =
+  AssessmentsAssessmentIdSubmissionsNewRouteImport.update({
+    id: '/submissions/new',
+    path: '/submissions/new',
+    getParentRoute: () => AssessmentsAssessmentIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRouteRouteWithChildren
   '/assessments/new': typeof AssessmentsNewRoute
+  '/assessments/$assessmentId/': typeof AssessmentsAssessmentIdIndexRoute
+  '/assessments/$assessmentId/submissions/new': typeof AssessmentsAssessmentIdSubmissionsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
   '/assessments/new': typeof AssessmentsNewRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdIndexRoute
+  '/assessments/$assessmentId/submissions/new': typeof AssessmentsAssessmentIdSubmissionsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRouteRouteWithChildren
   '/assessments/new': typeof AssessmentsNewRoute
+  '/assessments/$assessmentId/': typeof AssessmentsAssessmentIdIndexRoute
+  '/assessments/$assessmentId/submissions/new': typeof AssessmentsAssessmentIdSubmissionsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/assessments/$assessmentId' | '/assessments/new'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/assessments/$assessmentId'
+    | '/assessments/new'
+    | '/assessments/$assessmentId/'
+    | '/assessments/$assessmentId/submissions/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/assessments/$assessmentId' | '/assessments/new'
+  to:
+    | '/'
+    | '/about'
+    | '/assessments/new'
+    | '/assessments/$assessmentId'
+    | '/assessments/$assessmentId/submissions/new'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/assessments/$assessmentId'
     | '/assessments/new'
+    | '/assessments/$assessmentId/'
+    | '/assessments/$assessmentId/submissions/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AssessmentsAssessmentIdRoute: typeof AssessmentsAssessmentIdRoute
+  AssessmentsAssessmentIdRouteRoute: typeof AssessmentsAssessmentIdRouteRouteWithChildren
   AssessmentsNewRoute: typeof AssessmentsNewRoute
 }
 
@@ -101,16 +134,48 @@ declare module '@tanstack/react-router' {
       id: '/assessments/$assessmentId'
       path: '/assessments/$assessmentId'
       fullPath: '/assessments/$assessmentId'
-      preLoaderRoute: typeof AssessmentsAssessmentIdRouteImport
+      preLoaderRoute: typeof AssessmentsAssessmentIdRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/assessments/$assessmentId/': {
+      id: '/assessments/$assessmentId/'
+      path: '/'
+      fullPath: '/assessments/$assessmentId/'
+      preLoaderRoute: typeof AssessmentsAssessmentIdIndexRouteImport
+      parentRoute: typeof AssessmentsAssessmentIdRouteRoute
+    }
+    '/assessments/$assessmentId/submissions/new': {
+      id: '/assessments/$assessmentId/submissions/new'
+      path: '/submissions/new'
+      fullPath: '/assessments/$assessmentId/submissions/new'
+      preLoaderRoute: typeof AssessmentsAssessmentIdSubmissionsNewRouteImport
+      parentRoute: typeof AssessmentsAssessmentIdRouteRoute
     }
   }
 }
 
+interface AssessmentsAssessmentIdRouteRouteChildren {
+  AssessmentsAssessmentIdIndexRoute: typeof AssessmentsAssessmentIdIndexRoute
+  AssessmentsAssessmentIdSubmissionsNewRoute: typeof AssessmentsAssessmentIdSubmissionsNewRoute
+}
+
+const AssessmentsAssessmentIdRouteRouteChildren: AssessmentsAssessmentIdRouteRouteChildren =
+  {
+    AssessmentsAssessmentIdIndexRoute: AssessmentsAssessmentIdIndexRoute,
+    AssessmentsAssessmentIdSubmissionsNewRoute:
+      AssessmentsAssessmentIdSubmissionsNewRoute,
+  }
+
+const AssessmentsAssessmentIdRouteRouteWithChildren =
+  AssessmentsAssessmentIdRouteRoute._addFileChildren(
+    AssessmentsAssessmentIdRouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AssessmentsAssessmentIdRoute: AssessmentsAssessmentIdRoute,
+  AssessmentsAssessmentIdRouteRoute:
+    AssessmentsAssessmentIdRouteRouteWithChildren,
   AssessmentsNewRoute: AssessmentsNewRoute,
 }
 export const routeTree = rootRouteImport

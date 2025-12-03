@@ -29,7 +29,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import type { DragEndEvent } from '@dnd-kit/core'
-import { getAssessmentsCollection } from '../../collections/assessments'
+import { getAssessmentsCollection } from '@/collections/assessments'
 
 export const Route = createFileRoute('/assessments/new')({
   component: RouteComponent,
