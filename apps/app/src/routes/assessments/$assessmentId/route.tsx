@@ -76,7 +76,7 @@ function RouteComponent() {
         </ol>
       </nav>
       <article>
-        <header className="flex items-center justify-between">
+        <header className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg text-foreground font-semibold">
               {assessment.name}
