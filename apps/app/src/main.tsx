@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { openDatabase } from './lib/db'
 import { initAssessmentsCollection } from './collections/assessments'
+import { initSubmissionsCollection } from './collections/submissions'
 import { App } from './app'
 
 import './index.css'
@@ -9,6 +10,7 @@ import './index.css'
 try {
   await openDatabase()
   await initAssessmentsCollection()
+  await initSubmissionsCollection()
 } catch (error) {
   console.error('Unable to open database: ', error)
 }

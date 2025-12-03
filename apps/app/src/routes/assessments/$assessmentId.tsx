@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useFetchAssessment } from '@/hooks/useFetchAssessment'
+import { useFetchSubmissions } from '@/hooks/useFetchSubmissions'
 
 import { Button } from '@/components/ui/button'
 import { House, Slash } from 'lucide-react'
@@ -11,6 +12,7 @@ export const Route = createFileRoute('/assessments/$assessmentId')({
 function RouteComponent() {
   const { assessmentId } = Route.useParams()
   const assessment = useFetchAssessment({ assessmentId })
+  const submissions = useFetchSubmissions(assessmentId)
 
   if (!assessment) {
     return null
@@ -59,6 +61,11 @@ function RouteComponent() {
             <Button>Upload submission</Button>
           </div>
         </header>
+        <div>
+          {submissions.map((submission) => (
+            <div>{submission.submissionId}</div>
+          ))}
+        </div>
       </article>
     </>
   )

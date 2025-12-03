@@ -81,16 +81,79 @@ export type AssessmentCollection = RxCollection<
   AssessmentCollectionMethods
 >
 
+const assessmentDocumentMethods: AssessmentDocumentMethods = {}
+const assessmentCollectionMethods: AssessmentCollectionMethods = {}
+
+const submissionSchemaLiteral = {
+  title: 'submissions schema',
+  description: 'Submissions from students',
+  version: 0,
+  keyCompression: true,
+  primaryKey: 'submissionId',
+  type: 'object',
+  properties: {
+    submissionId: {
+      type: 'string',
+      maxLength: 100,
+    },
+    studentId: {
+      type: 'string',
+    },
+    assessmentId: {
+      type: 'string',
+      maxLength: 100,
+    },
+    files: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          image: {
+            type: 'string',
+          },
+          text: {
+            type: 'string',
+          },
+        },
+      },
+    },
+  },
+  indexes: ['assessmentId'],
+  required: ['submissionId', 'studentId', 'assessmentId', 'files'],
+} as const
+
+export const submissionSchemaTyped = toTypedRxJsonSchema(
+  submissionSchemaLiteral,
+)
+
+export type SubmissionDocType = ExtractDocumentTypeFromTypedRxJsonSchema<
+  typeof submissionSchemaTyped
+>
+
+export const submissionSchema: RxJsonSchema<SubmissionDocType> =
+  submissionSchemaLiteral
+export type SubmissionDocument = RxDocument<SubmissionDocType>
+
+export type SubmissionDocumentMethods = KeyFunctionMap
+export type SubmissionCollectionMethods = KeyFunctionMap
+
+export type SubmissionCollection = RxCollection<
+  SubmissionDocType,
+  SubmissionDocumentMethods,
+  SubmissionCollectionMethods
+>
+
+const submissionDocumentMethods: SubmissionDocumentMethods = {}
+const submissionCollectionMethods: SubmissionCollectionMethods = {}
+
 export type AppDatabaseCollections = {
   assessments: AssessmentCollection
+  submissions: SubmissionCollection
 }
 
 export type AppDatabase = RxDatabase<AppDatabaseCollections>
 
 let db: AppDatabase | null = null
-
-const assessmentDocumentMethods: AssessmentDocumentMethods = {}
-const assessmentCollectionMethods: AssessmentCollectionMethods = {}
 
 export async function openDatabase() {
   if (db) {
@@ -124,8 +187,16 @@ export async function openDatabase() {
       methods: assessmentDocumentMethods,
       statics: assessmentCollectionMethods,
     },
+    submissions: {
+      schema: submissionSchema,
+      methods: submissionDocumentMethods,
+      statics: submissionCollectionMethods,
+    },
   })
 
+  /**
+   * Verify insert
+   *
   db.assessments.postInsert(function insertHook(
     this: AssessmentCollection,
     _docData: AssessmentDocType,
@@ -133,6 +204,7 @@ export async function openDatabase() {
   ) {
     console.log('insert to ' + this.name + '-collection: ' + doc.name)
   }, false)
+  */
 
   /**
    * Test insert
