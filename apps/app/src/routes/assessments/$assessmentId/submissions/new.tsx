@@ -1,0 +1,12 @@
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute(
+  '/assessments/$assessmentId/submissions/new',
+)({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  const { assessmentId } = Route.useParams()
+  return <div>Hello {`/assessments/${assessmentId}/submissions/new`}!</div>
+}
