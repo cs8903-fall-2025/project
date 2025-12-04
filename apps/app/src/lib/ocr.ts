@@ -3,9 +3,6 @@ import { OCRClient } from 'tesseract-wasm'
 
 export async function runOCR(file: File) {
   const image = await createImageBitmap(file)
-
-  // Initialize the OCR engine. This will start a Web Worker to do the
-  // work in the background.
   const ocr = new OCRClient()
 
   try {
@@ -18,13 +15,10 @@ export async function runOCR(file: File) {
 
     await ocr.loadImage(image)
 
-    // Perform text recognition and return text in reading order.
     const text = await ocr.getText()
 
-    console.log('OCR text: ', text)
+    return text
   } finally {
-    // Once all OCR-ing has been done, shut down the Web Worker and free up
-    // resources.
     ocr.destroy()
   }
 }
