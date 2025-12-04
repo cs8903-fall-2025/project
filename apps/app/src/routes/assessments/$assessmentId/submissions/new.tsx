@@ -43,6 +43,9 @@ function RouteComponent() {
             canvas.height = bitmap.height
             const ctx = canvas.getContext('2d')
             ctx.drawImage(bitmap, 0, 0)
+            if (!ctx) {
+              resolve({ file, text: '', questionNumber: index + 1 })
+            }
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height)
             const image = engine.loadImage(data.width, data.height, data.data)
             const text = engine.getText(image)
