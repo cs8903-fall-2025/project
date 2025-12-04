@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import Dropzone from 'shadcn-dropzone'
 import { Image, Trash } from 'lucide-react'
 
+import { runOCR } from '@/lib/ocr'
+
 const fileExtension = (file: File) => file.name.split('.').pop()
 const fileSizeInKB = (file: File) => (file.size / 1024).toFixed(2)
 
@@ -19,6 +21,13 @@ function RouteComponent() {
 
   function handleDrop(acceptedFiles: File[]) {
     setFiles([...files, ...acceptedFiles])
+  }
+
+  async function handleUpload() {
+    files.forEach(async (file) => {
+      const text = await runOCR(file)
+      console.log(text)
+    })
   }
 
   return (
@@ -48,7 +57,7 @@ function RouteComponent() {
         ))}
       </ul>
       <div className="flex items-center gap-1">
-        <Button>Upload</Button>
+        <Button onClick={handleUpload}>Upload</Button>
         <Button asChild variant="link">
           <Link to={`/assessments/${assessmentId}`}>cancel</Link>
         </Button>

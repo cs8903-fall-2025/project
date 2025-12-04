@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { openDatabase } from './lib/db'
 import { initAssessmentsCollection } from './collections/assessments'
 import { initSubmissionsCollection } from './collections/submissions'
+
 import { App } from './app'
 
 import './index.css'
