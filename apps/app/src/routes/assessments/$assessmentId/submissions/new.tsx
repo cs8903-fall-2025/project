@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import Dropzone from 'shadcn-dropzone'
 import { Image, Trash } from 'lucide-react'
 
-import { runOCR } from '@/lib/ocr'
+// import { runOCR } from '@/lib/ocr'
+import { initOcrEngine } from '@/lib/ocr-enhanced'
 
 const fileExtension = (file: File) => file.name.split('.').pop()
 const fileSizeInKB = (file: File) => (file.size / 1024).toFixed(2)
@@ -31,6 +32,33 @@ function RouteComponent() {
 
   async function handleUpload() {
     setIsExtracting(true)
+    const engine = await initOcrEngine()
+
+    const results = await Promise.all(
+      files.map(async (file, index) => {
+        return new Promise((resolve) => {
+          createImageBitmap(file).then((bitmap) => {
+            const canvas = document.createElement('canvas')
+            canvas.width = bitmap.width
+            canvas.height = bitmap.height
+            const ctx = canvas.getContext('2d')
+            ctx.drawImage(bitmap, 0, 0)
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height)
+            const image = engine.loadImage(data.width, data.height, data.data)
+            const text = engine.getText(image)
+            resolve({ file, text, questionNumber: index + 1 })
+          })
+        })
+      }),
+    )
+
+    setExtractions(results)
+    setIsExtracting(false)
+  }
+
+  /**
+  async function handleUpload() {
+    setIsExtracting(true)
     const results = await Promise.all(
       files.map((file, index) => {
         return new Promise((resolve) => {
@@ -42,6 +70,7 @@ function RouteComponent() {
     ).finally(() => setIsExtracting(false))
     setExtractions(results)
   }
+  */
 
   if (!extractions.length) {
     return (
@@ -101,7 +130,7 @@ function RouteComponent() {
               className="border max-w-1/4 object-contain rounded shrink"
             />
             <div className="grow">
-              <label>Question {questionNumber}</label>
+              <Label>Question {questionNumber}</Label>
               <Textarea className="max-w-3/4 w-full">{text}</Textarea>
             </div>
           </div>
