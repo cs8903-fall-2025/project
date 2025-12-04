@@ -35,24 +35,33 @@ function RouteComponent() {
     const engine = await initOcrEngine()
 
     const results = await Promise.all(
-      files.map(async (file, index) => {
-        return new Promise((resolve) => {
-          createImageBitmap(file).then((bitmap) => {
-            const canvas = document.createElement('canvas')
-            canvas.width = bitmap.width
-            canvas.height = bitmap.height
-            const ctx = canvas.getContext('2d')
-            ctx.drawImage(bitmap, 0, 0)
-            if (!ctx) {
-              resolve({ file, text: '', questionNumber: index + 1 })
-            }
-            const data = ctx.getImageData(0, 0, canvas.width, canvas.height)
-            const image = engine.loadImage(data.width, data.height, data.data)
-            const text = engine.getText(image)
-            resolve({ file, text, questionNumber: index + 1 })
+      files.map(
+        async (
+          file,
+          index,
+        ): Promise<{ file: File; text: string; questionNumber: number }> => {
+          return new Promise((resolve) => {
+            createImageBitmap(file).then((bitmap) => {
+              let text = ''
+              const canvas = document.createElement('canvas')
+              canvas.width = bitmap.width
+              canvas.height = bitmap.height
+              const ctx = canvas.getContext('2d')
+              if (ctx) {
+                ctx.drawImage(bitmap, 0, 0)
+                const data = ctx.getImageData(0, 0, canvas.width, canvas.height)
+                const image = engine.loadImage(
+                  data.width,
+                  data.height,
+                  new Uint8Array(data.data),
+                )
+                text = engine.getText(image)
+              }
+              resolve({ file, text, questionNumber: index + 1 })
+            })
           })
-        })
-      }),
+        },
+      ),
     )
 
     setExtractions(results)
