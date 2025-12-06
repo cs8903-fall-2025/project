@@ -117,6 +117,32 @@ const submissionSchemaLiteral = {
         },
       },
     },
+    questions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          question: {
+            type: 'string',
+          },
+          answer: {
+            type: 'string',
+          },
+          points: {
+            type: 'number',
+          },
+          pointsAwarded: {
+            type: 'number',
+          },
+          feedback: {
+            type: 'string',
+          },
+          needsReview: {
+            type: 'boolean',
+          },
+        },
+      },
+    },
   },
   indexes: ['assessmentId'],
   required: ['submissionId', 'studentId', 'assessmentId', 'files'],
