@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useFetchSubmissions } from '@/hooks/useFetchSubmissions'
 
 export const Route = createFileRoute('/assessments/$assessmentId/')({
@@ -7,13 +7,19 @@ export const Route = createFileRoute('/assessments/$assessmentId/')({
 
 function RouteComponent() {
   const { assessmentId } = Route.useParams()
-  const submissions = useFetchSubmissions(assessmentId)
+  const submissions = useFetchSubmissions({ assessmentId })
 
   return (
-    <>
+    <ul>
       {submissions.map((submission) => (
-        <div>{submission.submissionId}</div>
+        <li>
+          <Link
+            to={`/assessments/${assessmentId}/submissions/${submission.submissionId}`}
+          >
+            {submission.studentId}
+          </Link>
+        </li>
       ))}
-    </>
+    </ul>
   )
 }
