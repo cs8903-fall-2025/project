@@ -194,28 +194,6 @@ export async function openDatabase() {
     },
   })
 
-  /**
-   * Verify insert
-   *
-  db.assessments.postInsert(function insertHook(
-    this: AssessmentCollection,
-    _docData: AssessmentDocType,
-    doc: AssessmentDocument,
-  ) {
-    console.log('insert to ' + this.name + '-collection: ' + doc.name)
-  }, false)
-  */
-
-  /**
-   * Test insert
-   *
-  const assessment = await db.assessments.insert({
-    assessmentId: crypto.randomUUID(),
-    name: 'My Assessment',
-    studentId: crypto.randomUUID(),
-  })
-  */
-
   return db
 }
 

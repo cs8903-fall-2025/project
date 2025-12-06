@@ -68,22 +68,6 @@ function RouteComponent() {
     setIsExtracting(false)
   }
 
-  /**
-  async function handleUpload() {
-    setIsExtracting(true)
-    const results = await Promise.all(
-      files.map((file, index) => {
-        return new Promise((resolve) => {
-          runOCR(file).then((text) =>
-            resolve({ file, text, questionNumber: index + 1 }),
-          )
-        }) as Promise<{ file: File; text: string; questionNumber: number }>
-      }),
-    ).finally(() => setIsExtracting(false))
-    setExtractions(results)
-  }
-  */
-
   if (!extractions.length) {
     return (
       <div className="space-y-6">
