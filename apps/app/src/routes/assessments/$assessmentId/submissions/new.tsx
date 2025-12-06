@@ -22,6 +22,7 @@ import { initOcrEngine } from '@/lib/ocr-enhanced'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
+import { getAssessmentsCollection } from '@/collections/assessments'
 import { getSubmissionsCollection } from '@/collections/submissions'
 
 export const Route = createFileRoute(
@@ -41,12 +42,13 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 function RouteComponent() {
-  const { assessmentId } = Route.useParams()
+  const { assessmentId } = Route.useParams() as { assessmentId: string }
   const [extractions, setExtractions] = useState<
     { file: File; text: string; questionNumber: number }[]
   >([])
   const [files, setFiles] = useState<File[]>([])
   const [isExtracting, setIsExtracting] = useState(false)
+  const [modelStatus, setModelStatus] = useState<string>('')
 
   const navigate = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,6 +62,24 @@ function RouteComponent() {
   })
 
   async function onSubmit(values: FormSchema) {
+    setIsExtracting(true)
+
+    // @ts-expect-error window.LanguageModel types
+    const availability = (await window.LanguageModel.availability({
+      expectedInputs: [{ type: 'text', languages: ['en'] }],
+    })) as 'unavailable' | 'downloadable' | 'downloading' | 'available'
+    if (availability === 'unavailable') {
+      alert(
+        'Language model is unavailable. Please use the latest version of Google Chrome.',
+      )
+      setIsExtracting(false)
+      return
+    } else if (availability !== 'available') {
+      setModelStatus(
+        'Downloading language model... Grading may take longer than usual.',
+      )
+    }
+
     const files = await Promise.all(
       extractions.map(({ file, text }) => {
         return new Promise<{ image: string; text: string }>((resolve) => {
@@ -75,14 +95,102 @@ function RouteComponent() {
       }),
     )
 
+    // @ts-expect-error window.LanguageModel types
+    const session = await window.LanguageModel.create({
+      initialPrompts: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful, harmless teacher chatbot that helps grade student submissions based on the questions provided.',
+        },
+      ],
+      expectedInputs: [{ type: 'text', languages: ['en'] }],
+      expectedOutputs: [{ type: 'text', languages: ['en'] }],
+      // @ts-expect-error monitor types
+      monitor(m) {
+        if (availability !== 'available') {
+          // @ts-expect-error downloadprogress types
+          m.addEventListener('downloadprogress', (e) => {
+            setModelStatus(
+              `Downloaded ${e.loaded * 100}% of the language model...`,
+            )
+          })
+        }
+      },
+    })
+
+    const assessments = getAssessmentsCollection()
+    const assessment = assessments.get(assessmentId)
+
+    if (!assessment) {
+      alert('Assessment not found.')
+      setIsExtracting(false)
+      return
+    }
+
+    const questions = await Promise.all(
+      assessment.questions.map((q) => {
+        const schema = {
+          type: 'object',
+          required: ['answer', 'pointsAwarded', 'feedback'],
+          additionalProperties: false,
+          properties: {
+            answer: { type: 'string' },
+            pointsAwarded: {
+              type: 'number',
+              minimum: 0,
+              maximum: q.points ?? 0,
+            },
+            feedback: { type: 'string' },
+          },
+        }
+        return new Promise<{
+          answer: string
+          pointsAwarded: number
+          feedback: string
+        }>((resolve) => {
+          session
+            .prompt(
+              `Grade the following question based and award it points based on the rules provided:
+
+              Question: ${q.question}
+
+              Maximum points: ${q.points}
+
+              Rules: ${q.rules}
+
+              Find the answer to the question in the following text:
+
+              ${files.map((f) => f.text).join('\n\n')}`,
+              { responseConstraint: schema },
+            )
+            // @ts-expect-error expectedInputs types
+            .then((result) => {
+              resolve(JSON.parse(result))
+            })
+            .catch((err: unknown) => {
+              console.error(err)
+            })
+        })
+      }),
+    )
+
     const submissions = getSubmissionsCollection()
     // TODO: Handle errors
     submissions.insert({
       ...values,
       files,
+      questions: questions.map((q, i) => ({
+        question: assessment.questions[i].question,
+        answer: q.answer,
+        points: assessment.questions[i].points,
+        pointsAwarded: q.pointsAwarded,
+        feedback: q.feedback,
+        needsReview: false,
+      })),
     })
     navigate({
-      to: '/assessments/$assessmentId',
+      to: `/assessments/${assessmentId}/submissions/${values.submissionId}`,
     })
   }
 
@@ -217,7 +325,12 @@ function RouteComponent() {
           </div>
         </React.Fragment>
       ))}
-      <Button form="submission">Submit for grading</Button>
+      <Button form="submission" disabled={isExtracting}>
+        {isExtracting ? 'Grading...' : 'Grade submission'}
+      </Button>
+      {isExtracting && modelStatus && (
+        <div className="text-sm text-muted-foreground">{modelStatus}</div>
+      )}
     </div>
   )
 }
