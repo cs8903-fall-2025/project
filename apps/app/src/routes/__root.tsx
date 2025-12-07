@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { Progress } from '@/components/ui/progress'
 import { Toaster } from '@/components/ui/sonner'
 
 export const Route = createRootRoute({
@@ -11,6 +12,7 @@ function RootComponent() {
   const [aiStatus, setAiStatus] = useState<
     'unavailable' | 'available' | 'downloading' | 'downloadable'
   >('available')
+  const [progress, setProgress] = useState(0)
 
   async function checkAiStatus() {
     // @ts-expect-error window.LanguageModel types
@@ -24,6 +26,27 @@ function RootComponent() {
       expectedInputs: [{ type: 'text', languages: ['en'] }],
     })) as 'unavailable' | 'downloadable' | 'downloading' | 'available'
     setAiStatus(availability)
+  }
+
+  async function downloadAiModel() {
+    setAiStatus('downloading')
+
+    // @ts-expect-error window.LanguageModel types
+    const session = await window.LanguageModel.create({
+      expectedInputs: [{ type: 'text', languages: ['en'] }],
+      expectedOutputs: [{ type: 'text', languages: ['en'] }],
+      // @ts-expect-error monitor types
+      monitor(m) {
+        // @ts-expect-error window.LanguageModel types
+        if (availability !== 'available') {
+          // @ts-expect-error downloadprogress types
+          m.addEventListener('downloadprogress', (e) => {
+            setProgress(e.loaded)
+          })
+        }
+      },
+    })
+    session.destroy()
   }
 
   useEffect(() => {
@@ -48,10 +71,19 @@ function RootComponent() {
           AI model is available. Grading should work as expected 🎉
         </div>
       )}
-      {['downloadable', 'downloading'].includes(aiStatus) && (
+      {aiStatus === 'downloadable' && (
         <div className="bg-yellow-600 text-yellow-50 text-center text-sm p-2">
-          AI model is {aiStatus}. You will need to grade one submission before
-          using this app offline.
+          AI model is {aiStatus}.{' '}
+          <button type="button" className="underline" onClick={downloadAiModel}>
+            Download now
+          </button>{' '}
+          to use offline
+        </div>
+      )}
+      {aiStatus === 'downloading' && (
+        <div className="bg-yellow-600 text-yellow-50 text-center text-sm p-2 flex items-center">
+          <span>AI model is downloading...</span>{' '}
+          <Progress value={progress} className="w-48" />
         </div>
       )}
       <header className="bg-primary">
