@@ -7,7 +7,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
@@ -125,17 +125,17 @@ function RouteComponent() {
   )
 
   return (
-    <article className="space-y-8">
-      <header>
-        <h2 className="text-3xl font-semibold">Student Submission</h2>
-      </header>
-      <section>
-        <h3 className="text-xl font-semibold mb-3">Details</h3>
+    <>
+      <h3 className="text-lg mb-1">Submission</h3>
+      <p className="text-muted-foreground font-light mb-8">
+        Review this submission for accurate grading. You may make adjustments.
+      </p>
+      <section className="mb-12">
         <dl className="space-y-3">
           <div className="flex items-center gap-3">
-            <dt className="font-semibold w-20">Student:</dt>
+            <dt className="font-medium text-sm w-20">Student:</dt>
             <dd className="flex-1 text-muted-forefound">
-              <InputGroup>
+              <InputGroup className="max-w-120">
                 <InputGroupInput
                   placeholder="Anonymous Student"
                   defaultValue={submission.studentId}
@@ -155,24 +155,17 @@ function RouteComponent() {
             </dd>
           </div>
           <div className="flex items-center gap-3">
-            <dt className="font-semibold w-20">Grade:</dt>
+            <dt className="font-medium text-sm w-20">Grade:</dt>
             <dd className="text-muted-foreground">
               {totalPointsAwarded}/{totalPoints} ({grade})
             </dd>
           </div>
         </dl>
       </section>
-      <section>
-        <h3 className="text-xl font-semibold mb-3">Assessment</h3>
-        <p className="text-muted-foreground">
-          You can review and adjust the graded submission here. You may also
-          view the OCR results.
-        </p>
-      </section>
       <Tabs defaultValue="assessments">
         <TabsList>
-          <TabsTrigger value="ocr">OCR Results</TabsTrigger>
-          <TabsTrigger value="assessments">Assessment</TabsTrigger>
+          <TabsTrigger value="ocr">Scanned Pages</TabsTrigger>
+          <TabsTrigger value="assessments">Grade Questions</TabsTrigger>
         </TabsList>
         <TabsContent value="ocr">
           <ul className="space-y-8">
@@ -195,79 +188,95 @@ function RouteComponent() {
             ))}
           </ul>
         </TabsContent>
-        <TabsContent value="assessments">
+        <TabsContent value="assessments" className="pt-3">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               {fields.map((field, index) => (
-                <Card key={field.id} className="bg-secondary p-4 space-y-6">
-                  <p className="font-semibold">
-                    {submission.questions?.[index]?.question}
-                  </p>
-                  <FormField
-                    control={form.control}
-                    name={`questions.${index}.answer`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Answer</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} className="bg-white" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`questions.${index}.feedback`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Feedback</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} className="bg-white" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`questions.${index}.pointsAwarded`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Points Awarded</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            type="number"
-                            max={submission.questions?.[index]?.points}
-                            className="bg-white"
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          out of {submission.questions?.[index]?.points}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`questions.${index}.needsReview`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Needs Review?</FormLabel>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            className="bg-white"
-                            onCheckedChange={field.onChange}
-                            id={`questions.${index}.needsReview`}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <Card key={field.id} className="border-transparent bg-gray-50">
+                  <CardHeader>
+                    <CardTitle>
+                      {submission.questions?.[index]?.question}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name={`questions.${index}.answer`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Answer</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} className="bg-white" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`questions.${index}.feedback`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Feedback</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} className="bg-white" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="flex gap-16 items-baseline">
+                      <FormField
+                        control={form.control}
+                        name={`questions.${index}.pointsAwarded`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Points Awarded</FormLabel>
+                            <div className="flex gap-1 items-center">
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="number"
+                                  max={submission.questions?.[index]?.points}
+                                  className="bg-white max-w-12"
+                                />
+                              </FormControl>
+                              <span className="text-sm text-muted-foreground">
+                                out of {submission.questions?.[index]?.points}
+                              </span>
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`questions.${index}.needsReview`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Status</FormLabel>
+                            <div
+                              className="flex gap-1 items-center"
+                              style={{ minHeight: '36px' }}
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  className="bg-white border-gray-300"
+                                  onCheckedChange={field.onChange}
+                                  id={`questions.${index}.needsReview`}
+                                />
+                              </FormControl>
+                              <span className="text-sm text-muted-foreground">
+                                needs review?
+                              </span>
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </CardContent>
                 </Card>
               ))}
               <div className="flex justify-start gap-2 items-center border-t border-t-gray-200 py-6">
@@ -280,6 +289,6 @@ function RouteComponent() {
           </Form>
         </TabsContent>
       </Tabs>
-    </article>
+    </>
   )
 }
