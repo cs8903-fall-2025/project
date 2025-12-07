@@ -33,54 +33,56 @@ function RouteComponent() {
         </strong>{' '}
         for this assessment.
       </p>
-      <div className="border border-gray-200 p-6 rounded-2xl">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Submission ID</TableHead>
-              <TableHead>Student ID</TableHead>
-              <TableHead>Grade</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {submissions
-              .sort((a, b) => {
-                return a.studentId.localeCompare(b.studentId)
-              })
-              .map((submission) => {
-                const { totalPoints, totalPointsAwarded, grade } =
-                  calculateGrade(submission.questions)
-                return (
-                  <TableRow key={submission.submissionId}>
-                    <TableCell>{submission.submissionId}</TableCell>
-                    <TableCell>{submission.studentId}</TableCell>
-                    <TableCell>
-                      {totalPoints}/{totalPointsAwarded} ({grade})
-                    </TableCell>
-                    <TableCell>
-                      {submission.questions?.some((q) => q.needsReview) ? (
-                        <Badge variant="destructive">Review</Badge>
-                      ) : (
-                        <Badge variant="secondary">Graded</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Button asChild size="sm" variant="outline">
-                        <Link
-                          to={`/assessments/${assessmentId}/submissions/${submission.submissionId}`}
-                        >
-                          <Search /> View
-                        </Link>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-          </TableBody>
-        </Table>
-      </div>
+      {submissions.length > 0 && (
+        <div className="border border-gray-200 p-6 rounded-2xl">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Submission ID</TableHead>
+                <TableHead>Student ID</TableHead>
+                <TableHead>Grade</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {submissions
+                .sort((a, b) => {
+                  return a.studentId.localeCompare(b.studentId)
+                })
+                .map((submission) => {
+                  const { totalPoints, totalPointsAwarded, grade } =
+                    calculateGrade(submission.questions)
+                  return (
+                    <TableRow key={submission.submissionId}>
+                      <TableCell>{submission.submissionId}</TableCell>
+                      <TableCell>{submission.studentId}</TableCell>
+                      <TableCell>
+                        {totalPoints}/{totalPointsAwarded} ({grade})
+                      </TableCell>
+                      <TableCell>
+                        {submission.questions?.some((q) => q.needsReview) ? (
+                          <Badge variant="destructive">Review</Badge>
+                        ) : (
+                          <Badge variant="secondary">Graded</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Button asChild size="sm" variant="outline">
+                          <Link
+                            to={`/assessments/${assessmentId}/submissions/${submission.submissionId}`}
+                          >
+                            <Search /> View
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </>
   )
 }
