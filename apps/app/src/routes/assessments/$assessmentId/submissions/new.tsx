@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -36,7 +37,7 @@ const fileSizeInKB = (file: File) => (file.size / 1024).toFixed(2)
 
 const formSchema = z.object({
   assessmentId: z.string().max(100),
-  studentId: z.string().max(100),
+  studentId: z.string().max(100).nonempty(),
   submissionId: z.string().max(100),
 })
 type FormSchema = z.infer<typeof formSchema>
@@ -69,7 +70,7 @@ function RouteComponent() {
       expectedInputs: [{ type: 'text', languages: ['en'] }],
     })) as 'unavailable' | 'downloadable' | 'downloading' | 'available'
     if (availability === 'unavailable') {
-      alert(
+      toast.error(
         'Language model is unavailable. Please use the latest version of Google Chrome.',
       )
       setIsExtracting(false)
@@ -123,7 +124,7 @@ function RouteComponent() {
     const assessment = assessments.get(assessmentId)
 
     if (!assessment) {
-      alert('Assessment not found.')
+      toast.error('Assessment not found.')
       setIsExtracting(false)
       return
     }
@@ -238,99 +239,142 @@ function RouteComponent() {
 
   if (!extractions.length) {
     return (
-      <div className="space-y-6">
-        <Dropzone onDrop={onDrop} />
-        <ul className="space-y-3">
-          {files.map((file, index) => (
-            <li key={index}>
-              <div className="border-secondary border flex items-center gap-2 max-w-96 px-2 py-3 rounded-sm">
-                <Image />
-                <div>
-                  <div className="truncate text-sm">{file.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {fileExtension(file)} &middot; {fileSizeInKB(file)}KB
+      <>
+        <h3 className="text-lg mb-1">New Submission</h3>
+        <h4 className="mb-2">Part 1: Upload and extract</h4>
+        <p className="text-muted-foreground font-light mb-2">
+          Add scanned images of the student's submission. You can add multiple
+          images if needed. Please ensure the images are clear and legible for
+          accurate text extraction.
+        </p>
+        <p className="text-muted-foreground font-light mb-4">
+          Your files will be processed locally in your browser using OCR
+          (Optical Character Recognition) technology. No files will be uploaded
+          to any server.
+        </p>
+        <div className="space-y-6">
+          <Dropzone onDrop={onDrop} />
+          <ul className="space-y-3">
+            {files.map((file, index) => (
+              <li key={index}>
+                <div className="flex items-center gap-2 justify-between px-2 py-3 border border-gray-200 rounded-lg ">
+                  <div className="flex items-center gap-2">
+                    <Image />
+                    <div>
+                      <div className="truncate text-sm">{file.name}</div>
+                      <div className="text-xs text-muted-foreground uppercase">
+                        {fileExtension(file)} &middot; {fileSizeInKB(file)}KB
+                      </div>
+                    </div>
                   </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label="Delete"
+                    className="rounded-full"
+                    onClick={() =>
+                      setFiles(files.filter((_, i) => i !== index))
+                    }
+                  >
+                    <Trash />
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  aria-label="Delete"
-                  className="rounded-full"
-                >
-                  <Trash />
-                </Button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="flex items-center gap-1">
-          <Button onClick={onUpload} disabled={isExtracting}>
-            {isExtracting ? 'Processing...' : 'Process files'}
-          </Button>
-          <Button asChild variant="link">
-            <Link to={`/assessments/${assessmentId}`}>cancel</Link>
-          </Button>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-1">
+            <Button onClick={onUpload} disabled={isExtracting}>
+              {isExtracting
+                ? 'Working on extraction...'
+                : 'Upload and extract text'}
+            </Button>
+            <Button asChild variant="link">
+              <Link to={`/assessments/${assessmentId}`}>cancel</Link>
+            </Button>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-lg font-semibold">Ready to Grade</h2>
-        <p className="text-muted-foreground">
-          Review the submission and then grade it.
-        </p>
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 px-2 py-4"
-          id="submission"
-        >
-          <FormLabel>Student ID or name</FormLabel>
-          <FormField
-            control={form.control}
-            name="studentId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormDescription>
-                  Enter the student's name or ID for this submission.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
-      {extractions.map(({ file, text, questionNumber }, index) => (
-        <React.Fragment
-          key={`${file.lastModified}-${file.name}-${file.size}-${file.type}`}
-        >
-          <div className="flex items-start w-full gap-6">
-            <img
-              src={URL.createObjectURL(file)}
-              alt={`Extraction #${index + 1}`}
-              className="border max-w-1/4 object-contain rounded shrink"
+    <>
+      <h3 className="text-lg mb-1">New Submission</h3>
+      <h4 className="mb-2">Part 2: Grade work</h4>
+      <p className="text-muted-foreground font-light mb-2">
+        Please review the scanned image and extracted text for each question.
+        Make any necessary edits to the extracted text before grading.
+      </p>
+      <p className="text-muted-foreground font-light mb-8">
+        This submission will be graded using an on-device language model. No
+        files or data will be uploaded to any server. If the model has not yet
+        been downloaded, grading may take longer than usual.
+      </p>
+      <div className="space-y-6">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+            id="submission"
+          >
+            <FormField
+              control={form.control}
+              name="studentId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Student ID or name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <div className="grow">
-              <Label>Question {questionNumber}</Label>
-              <Textarea className="max-w-3/4 w-full" defaultValue={text} />
+          </form>
+        </Form>
+        {extractions.map(({ file, text }, index) => (
+          <React.Fragment
+            key={`${file.lastModified}-${file.name}-${file.size}-${file.type}`}
+          >
+            <div className="border border-gray-200 p-6 rounded-lg">
+              <div className="flex items-start w-full gap-6">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`Extraction #${index + 1}`}
+                  className="max-w-1/4 object-contain shrink"
+                />
+                <div className="grow">
+                  <Label className="mb-2">Extracted text</Label>
+                  <Textarea
+                    className="w-full"
+                    defaultValue={text}
+                    onChange={(e) => {
+                      const newText = e.target.value
+                      setExtractions(
+                        extractions.map((extraction, i) => {
+                          if (i === index) {
+                            return {
+                              ...extraction,
+                              text: newText,
+                            }
+                          }
+                          return extraction
+                        }),
+                      )
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </React.Fragment>
-      ))}
-      <Button form="submission" disabled={isExtracting}>
-        {isExtracting ? 'Grading...' : 'Grade submission'}
-      </Button>
-      {isExtracting && modelStatus && (
-        <div className="text-sm text-muted-foreground">{modelStatus}</div>
-      )}
-    </div>
+          </React.Fragment>
+        ))}
+        <Button form="submission" disabled={isExtracting}>
+          {isExtracting ? 'Grading...' : 'Grade submission'}
+        </Button>
+        {isExtracting && modelStatus && (
+          <div className="text-sm text-muted-foreground">{modelStatus}</div>
+        )}
+      </div>
+    </>
   )
 }
