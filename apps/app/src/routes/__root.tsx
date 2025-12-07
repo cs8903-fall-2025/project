@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Toaster } from '@/components/ui/sonner'
@@ -7,8 +8,52 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  const [aiStatus, setAiStatus] = useState<
+    'unavailable' | 'available' | 'downloading' | 'downloadable'
+  >('available')
+
+  async function checkAiStatus() {
+    // @ts-expect-error window.LanguageModel types
+    if (!window.LanguageModel?.availability) {
+      setAiStatus('unavailable')
+      return
+    }
+
+    // @ts-expect-error window.LanguageModel types
+    const availability = (await window.LanguageModel.availability({
+      expectedInputs: [{ type: 'text', languages: ['en'] }],
+    })) as 'unavailable' | 'downloadable' | 'downloading' | 'available'
+    setAiStatus(availability)
+  }
+
+  useEffect(() => {
+    void checkAiStatus()
+  }, [])
+
   return (
     <>
+      {aiStatus === 'unavailable' && (
+        <div className="bg-red-600 text-red-50 text-center text-sm p-2">
+          AI not available. Grading will not work. Use Google Chrome.{' '}
+          <a
+            className="underline"
+            href="https://developer.chrome.com/docs/ai/get-started#user-activation"
+          >
+            Troubleshooting
+          </a>
+        </div>
+      )}
+      {aiStatus === 'available' && (
+        <div className="bg-green-600 text-green-50 text-center text-sm p-2">
+          AI model is available. Grading should work as expected 🎉
+        </div>
+      )}
+      {['downloadable', 'downloading'].includes(aiStatus) && (
+        <div className="bg-yellow-600 text-yellow-50 text-center text-sm p-2">
+          AI model is {aiStatus}. You will need to grade one submission before
+          using this app offline.
+        </div>
+      )}
       <header className="bg-primary">
         <div className="mx-auto max-w-7xl flex items-center space-between py-3 px-6">
           <img
