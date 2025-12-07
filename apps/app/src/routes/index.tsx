@@ -4,7 +4,14 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { getAssessmentsCollection } from '@/collections/assessments'
 import { useFetchAssessments } from '@/hooks/useFetchAssessments'
 
-import { Archive, ClipboardList, EllipsisVertical, Funnel } from 'lucide-react'
+import {
+  Archive,
+  ClipboardList,
+  EllipsisVertical,
+  Files,
+  Funnel,
+} from 'lucide-react'
+import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -23,6 +30,11 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { count } from '@/lib/text'
 
 export const Route = createFileRoute('/')({
@@ -40,18 +52,20 @@ function Index() {
     assessmentsCollection.update(id, (draft) => {
       draft.archived = true
     })
+    toast.success('Assessment archived')
   }
 
   function unarchive(id: string) {
     assessmentsCollection.update(id, (draft) => {
       draft.archived = false
     })
+    toast.success('Assessment unarchived')
   }
 
   return (
     <>
-      <div className="flex items-baseline space-between w-full">
-        <div className="flex-1 mb-6">
+      <div className="border-b border-b-gray-200 flex items-baseline space-between w-full pb-4 mb-8">
+        <div className="flex-1">
           <h2 className="text-2xl text-gray-900 font-semibold">Assessments</h2>
           <Badge
             variant={archiveStatus === 'Archived' ? 'destructive' : 'secondary'}
@@ -62,11 +76,12 @@ function Index() {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Funnel />
+            <Button variant="ghost">
+              <Funnel aria-hidden="true" />
+              Filter assessments
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="w-56" hideWhenDetached>
             <DropdownMenuRadioGroup
               value={archiveStatus}
               onValueChange={setArchiveStatus}
@@ -81,6 +96,34 @@ function Index() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      {assessments.length === 0 && (
+        <div
+          className={
+            archiveStatus === 'Archived'
+              ? `bg-red-50 rounded-2xl border border-dashed border-red-200 w-1/3 mx-auto p-6 text-center`
+              : `bg-blue-50 rounded-2xl border border-dashed border-blue-200 w-1/3 mx-auto p-6 text-center`
+          }
+        >
+          {archiveStatus === 'Archived' ? (
+            <Archive size={96} className="mx-auto text-red-900" />
+          ) : (
+            <Files size={96} className="mx-auto text-blue-900" />
+          )}
+          <p
+            className={
+              archiveStatus === 'Archived'
+                ? 'text-center text-red-800 mt-4'
+                : 'text-center text-blue-800 mt-4'
+            }
+          >
+            No {archiveStatus === 'Archived' ? 'archived' : ''} assessments
+            found.
+          </p>
+          <Button asChild className="mt-6">
+            <Link to="/assessments/new">Create your first</Link>
+          </Button>
+        </div>
+      )}
       <ul className="grid grid-cols-3 gap-4 auto-rows-max">
         {assessments.map((assessment) => (
           <li key={assessment.assessmentId}>
