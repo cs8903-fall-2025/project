@@ -21,8 +21,44 @@ export default defineConfig({
     VitePWA({
       devOptions: {
         enabled: true,
+        type: 'module',
+        navigateFallback: 'index.html',
+      },
+      manifest: {
+        name: 'Owligent',
+        short_name: 'Owligent',
+        description: 'An AI-powered assignment, homework, and test grader',
+        theme_color: '#ffffff',
+        icons: [
+          {
+            src: 'pwa-64x64.png',
+            sizes: '64x64',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'maskable-icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
       },
       registerType: 'autoUpdate',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,rten,wasm}'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
+      },
     }),
     cloudflare(),
   ] as unknown as PluginOption[],
