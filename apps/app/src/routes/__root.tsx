@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { toast } from 'sonner'
 import { Progress } from '@/components/ui/progress'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -37,15 +38,17 @@ function RootComponent() {
       expectedOutputs: [{ type: 'text', languages: ['en'] }],
       // @ts-expect-error monitor types
       monitor(m) {
-        // @ts-expect-error window.LanguageModel types
-        if (availability !== 'available') {
-          // @ts-expect-error downloadprogress types
-          m.addEventListener('downloadprogress', (e) => {
-            setProgress(e.loaded)
-          })
-        }
+        // @ts-expect-error downloadprogress types
+        m.addEventListener('downloadprogress', (e) => {
+          setProgress(e.loaded)
+
+          if (e.loaded >= 1) {
+            toast.success('AI model downloaded successfully!')
+          }
+        })
       },
     })
+    setProgress(1)
     session.destroy()
   }
 
@@ -66,11 +69,6 @@ function RootComponent() {
           </a>
         </div>
       )}
-      {aiStatus === 'available' && (
-        <div className="bg-green-600 text-green-50 text-center text-sm p-2">
-          AI model is available. Grading should work as expected 🎉
-        </div>
-      )}
       {aiStatus === 'downloadable' && (
         <div className="bg-yellow-600 text-yellow-50 text-center text-sm p-2">
           AI model is {aiStatus}.{' '}
@@ -81,9 +79,9 @@ function RootComponent() {
         </div>
       )}
       {aiStatus === 'downloading' && (
-        <div className="bg-yellow-600 text-yellow-50 text-center text-sm p-2 flex items-center">
+        <div className="bg-blue-100 text-blue-600 text-center text-sm p-2 flex items-center justify-center">
           <span>AI model is downloading...</span>{' '}
-          <Progress value={progress} className="w-48" />
+          <Progress value={progress * 100} className="ml-2 w-48" />
         </div>
       )}
       <header className="bg-primary">

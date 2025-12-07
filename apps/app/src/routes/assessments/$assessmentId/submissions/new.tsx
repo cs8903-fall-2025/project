@@ -95,13 +95,25 @@ function RouteComponent() {
       }),
     )
 
+    const assessments = getAssessmentsCollection()
+    const assessment = assessments.get(assessmentId)
+
+    if (!assessment) {
+      toast.error('Assessment not found.')
+      setIsExtracting(false)
+      return
+    }
+
     // @ts-expect-error window.LanguageModel types
     const session = await window.LanguageModel.create({
       initialPrompts: [
         {
           role: 'system',
           content:
-            'You are a helpful, harmless teacher chatbot that helps grade student submissions based on the questions provided.',
+            'You are a helpful, harmless teacher chatbot that helps grade student submissions based on the questions provided. ' +
+            assessment.description
+              ? assessment.description
+              : '',
         },
       ],
       expectedInputs: [{ type: 'text', languages: ['en'] }],
@@ -118,15 +130,6 @@ function RouteComponent() {
         }
       },
     })
-
-    const assessments = getAssessmentsCollection()
-    const assessment = assessments.get(assessmentId)
-
-    if (!assessment) {
-      toast.error('Assessment not found.')
-      setIsExtracting(false)
-      return
-    }
 
     const questions = await Promise.all(
       assessment.questions.map((q) => {
@@ -174,6 +177,12 @@ function RouteComponent() {
         })
       }),
     )
+
+    try {
+      session.destroy()
+    } catch (error: unknown) {
+      console.error('Error destroying session: ', error)
+    }
 
     const submissions = getSubmissionsCollection()
     // TODO: Handle errors
