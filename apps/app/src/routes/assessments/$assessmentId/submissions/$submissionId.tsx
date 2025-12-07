@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useFetchSubmission } from '@/hooks/useFetchSubmission'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -88,6 +89,7 @@ function RouteComponent() {
     submissions.update(submissionId, (draft) => {
       draft.studentId = studentId
     })
+    toast.success('Student ID updated')
   }
 
   function onSubmit(values: FormSchema) {
@@ -268,7 +270,12 @@ function RouteComponent() {
                   />
                 </Card>
               ))}
-              <Button type="submit">Update</Button>
+              <div className="flex justify-start gap-2 items-center border-t border-t-gray-200 py-6">
+                <Button type="submit" size="lg">
+                  Update submission
+                </Button>
+                <Link to={`/assessments/${assessmentId}`}>Cancel</Link>
+              </div>
             </form>
           </Form>
         </TabsContent>

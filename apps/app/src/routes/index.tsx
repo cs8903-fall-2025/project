@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button'
 import {
   Card,
   CardAction,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -32,11 +31,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { count } from '@/lib/text'
 
 export const Route = createFileRoute('/')({
@@ -126,92 +120,94 @@ function Index() {
           )}
         </div>
       )}
-      <ul className="grid grid-cols-3 gap-4 auto-rows-max">
-        {assessments.map((assessment) => (
-          <li key={assessment.assessmentId}>
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle className="hover:underline">
-                  <Link to={`/assessments/${assessment.assessmentId}`}>
-                    {assessment.name}
-                  </Link>
-                </CardTitle>
-                <CardDescription className="flex items-center gap-6 flex-start">
-                  <span className="flex items-center gap-1">
-                    <MessageCircleQuestionMark
-                      size="18"
-                      className="inline-block text-green-600"
-                    />{' '}
-                    {count(
-                      'question',
-                      'questions',
-                      assessment.questions.length,
-                    )}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Trophy
-                      size="18"
-                      className="inline-block text-yellow-600"
-                    />{' '}
-                    {count(
-                      'point',
-                      'points',
-                      assessment.questions.reduce(
-                        (accumulator, { points = 0 }) => {
-                          return accumulator + points
-                        },
-                        0,
-                      ),
-                    )}
-                  </span>
-                </CardDescription>
-                <CardAction className="flex items-center gap-2">
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        aria-label="Archive"
-                        className="-mt-2"
-                      >
-                        <EllipsisVertical />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-40" align="end">
-                      <DropdownMenuItem asChild>
-                        <Link to={`/assessments/${assessment.assessmentId}`}>
-                          View submissions
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link
-                          to={`/assessments/${assessment.assessmentId}/submissions/new`}
-                        >
-                          New submission
-                        </Link>
-                      </DropdownMenuItem>
-                      {assessment.archived && (
-                        <DropdownMenuItem
-                          onClick={() => unarchive(assessment.assessmentId)}
-                        >
-                          Re-open
-                        </DropdownMenuItem>
+      {assessments.length > 0 && (
+        <ul className="grid grid-cols-3 gap-4 auto-rows-max">
+          {assessments.map((assessment) => (
+            <li key={assessment.assessmentId}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="hover:underline">
+                    <Link to={`/assessments/${assessment.assessmentId}`}>
+                      {assessment.name}
+                    </Link>
+                  </CardTitle>
+                  <CardDescription className="flex items-center gap-6 flex-start">
+                    <span className="flex items-center gap-1">
+                      <MessageCircleQuestionMark
+                        size="18"
+                        className="inline-block text-green-600"
+                      />{' '}
+                      {count(
+                        'question',
+                        'questions',
+                        assessment.questions.length,
                       )}
-                      {!assessment.archived && (
-                        <DropdownMenuItem
-                          onClick={() => archive(assessment.assessmentId)}
-                        >
-                          Archive
-                        </DropdownMenuItem>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Trophy
+                        size="18"
+                        className="inline-block text-yellow-600"
+                      />{' '}
+                      {count(
+                        'point',
+                        'points',
+                        assessment.questions.reduce(
+                          (accumulator, { points = 0 }) => {
+                            return accumulator + points
+                          },
+                          0,
+                        ),
                       )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </CardAction>
-              </CardHeader>
-            </Card>
-          </li>
-        ))}
-      </ul>
+                    </span>
+                  </CardDescription>
+                  <CardAction className="flex items-center gap-2">
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Archive"
+                          className="-mt-2"
+                        >
+                          <EllipsisVertical />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-40" align="end">
+                        <DropdownMenuItem asChild>
+                          <Link to={`/assessments/${assessment.assessmentId}`}>
+                            View submissions
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to={`/assessments/${assessment.assessmentId}/submissions/new`}
+                          >
+                            New submission
+                          </Link>
+                        </DropdownMenuItem>
+                        {assessment.archived && (
+                          <DropdownMenuItem
+                            onClick={() => unarchive(assessment.assessmentId)}
+                          >
+                            Re-open
+                          </DropdownMenuItem>
+                        )}
+                        {!assessment.archived && (
+                          <DropdownMenuItem
+                            onClick={() => archive(assessment.assessmentId)}
+                          >
+                            Archive
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </CardAction>
+                </CardHeader>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }
