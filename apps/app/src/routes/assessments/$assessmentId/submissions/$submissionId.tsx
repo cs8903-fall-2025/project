@@ -127,38 +127,42 @@ function RouteComponent() {
       <header>
         <h2 className="text-3xl font-semibold">Student Submission</h2>
       </header>
-      <section className="prose">
-        <h3>Details</h3>
-        <dl>
-          <dt>Student ID:</dt>
-          <dd>
-            <InputGroup>
-              <InputGroupInput
-                placeholder="Anonymous Student"
-                defaultValue={submission.studentId}
-                onChange={onChangeStudentId}
-              />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  variant="outline"
-                  className="rounded-full"
-                  onClick={onChangeStudentIdCommit}
-                  size="xs"
-                >
-                  Change
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-          </dd>
-          <dt>Grade</dt>
-          <dd>
-            {totalPointsAwarded} / {totalPoints} ({grade})
-          </dd>
+      <section>
+        <h3 className="text-xl font-semibold mb-3">Details</h3>
+        <dl className="space-y-3">
+          <div className="flex items-center gap-3">
+            <dt className="font-semibold w-20">Student:</dt>
+            <dd className="flex-1 text-muted-forefound">
+              <InputGroup>
+                <InputGroupInput
+                  placeholder="Anonymous Student"
+                  defaultValue={submission.studentId}
+                  onChange={onChangeStudentId}
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    variant="outline"
+                    className="rounded-full"
+                    onClick={onChangeStudentIdCommit}
+                    size="xs"
+                  >
+                    Change
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+            </dd>
+          </div>
+          <div className="flex items-center gap-3">
+            <dt className="font-semibold w-20">Grade:</dt>
+            <dd className="text-muted-foreground">
+              {totalPointsAwarded}/{totalPoints} ({grade})
+            </dd>
+          </div>
         </dl>
       </section>
-      <section className="prose max-w-none">
-        <h3>Assessment</h3>
-        <p>
+      <section>
+        <h3 className="text-xl font-semibold mb-3">Assessment</h3>
+        <p className="text-muted-foreground">
           You can review and adjust the graded submission here. You may also
           view the OCR results.
         </p>
@@ -172,33 +176,28 @@ function RouteComponent() {
           <ul className="space-y-8">
             {submission.files.map((file, index) => (
               <li key={index}>
-                <Card className="p-4">
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <img
-                        src={file.image}
-                        alt={`Submitted file #${index + 1}`}
-                        className="width-full border border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold mb-2">Extracted Text:</h4>
-                      <pre className="whitespace-pre-wrap">{file.text}</pre>
-                    </div>
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <img
+                      src={file.image}
+                      alt={`Submitted file #${index + 1}`}
+                      className="width-full border border-gray-300 rounded-md"
+                    />
                   </div>
-                </Card>
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-2">Extracted Text:</h4>
+                    <pre className="whitespace-pre-wrap">{file.text}</pre>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
         </TabsContent>
         <TabsContent value="assessments">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 px-2 py-4"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               {fields.map((field, index) => (
-                <Card key={field.id} className="p-4 space-y-6">
+                <Card key={field.id} className="bg-secondary p-4 space-y-6">
                   <p className="font-semibold">
                     {submission.questions?.[index]?.question}
                   </p>
@@ -258,6 +257,7 @@ function RouteComponent() {
                         <FormControl>
                           <Checkbox
                             checked={field.value}
+                            className="bg-white"
                             onCheckedChange={field.onChange}
                             id={`questions.${index}.needsReview`}
                           />
