@@ -12,7 +12,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -89,7 +88,7 @@ function RouteComponent() {
     submissions.update(submissionId, (draft) => {
       draft.studentId = studentId
     })
-    toast.success('Student ID updated')
+    toast.success('Student ID updated.')
   }
 
   function onSubmit(values: FormSchema) {
@@ -107,6 +106,7 @@ function RouteComponent() {
         needsReview: values.questions[i].needsReview,
       }))
     })
+    toast.success('Successfully updated the submission!')
     navigate({
       to: `/assessments/${assessmentId}`,
     })
