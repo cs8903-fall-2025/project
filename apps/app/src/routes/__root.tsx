@@ -1,7 +1,5 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/sonner'
 
 export const Route = createRootRoute({
@@ -22,36 +20,23 @@ function RootComponent() {
             Owligent
           </h1>
           <nav className="text-primary-foreground p-2 flex gap-4 items-center">
-            <Button
-              asChild
-              variant="link"
-              className="text-primary-foreground hover:text-primary-foreground"
+            <Link
+              to="/"
+              activeProps={{
+                className: 'font-bold',
+              }}
+              activeOptions={{ exact: true }}
             >
-              <Link
-                to="/"
-                activeProps={{
-                  className: 'font-bold',
-                }}
-                activeOptions={{ exact: true }}
-              >
-                Assessments
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="secondary"
-              className="border-white border bg-transparent hover:bg-blue-800 text-primary-foreground hover:text-primary-foreground"
+              Assessments
+            </Link>
+            <Link
+              to="/assessments/new"
+              activeProps={{
+                className: 'font-bold',
+              }}
             >
-              <Link
-                to="/assessments/new"
-                activeProps={{
-                  className: 'font-bold',
-                }}
-              >
-                <Plus aria-hidden="true" />
-                New Assessment
-              </Link>
-            </Button>
+              New Assessment
+            </Link>
           </nav>
         </div>
       </header>
