@@ -10,6 +10,8 @@ import {
   EllipsisVertical,
   Files,
   Funnel,
+  MessageCircleQuestionMark,
+  Trophy,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
@@ -42,7 +44,7 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  const [archiveStatus, setArchiveStatus] = useState<string>('Unarchived')
+  const [archiveStatus, setArchiveStatus] = useState<string>('Open')
   const assessments = useFetchAssessments({
     archived: archiveStatus === 'Archived',
   })
@@ -59,7 +61,7 @@ function Index() {
     assessmentsCollection.update(id, (draft) => {
       draft.archived = false
     })
-    toast.success('Assessment unarchived')
+    toast.success('Assessment re-opened')
   }
 
   return (
@@ -86,11 +88,9 @@ function Index() {
               value={archiveStatus}
               onValueChange={setArchiveStatus}
             >
+              <DropdownMenuRadioItem value="Open">Open</DropdownMenuRadioItem>
               <DropdownMenuRadioItem value="Archived">
                 Archived
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="Unarchived">
-                Unarchived
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
@@ -119,9 +119,11 @@ function Index() {
             No {archiveStatus === 'Archived' ? 'archived' : ''} assessments
             found.
           </p>
-          <Button asChild className="mt-6">
-            <Link to="/assessments/new">Create your first</Link>
-          </Button>
+          {archiveStatus === 'Open' && (
+            <Button asChild className="mt-6">
+              <Link to="/assessments/new">Create your first</Link>
+            </Button>
+          )}
         </div>
       )}
       <ul className="grid grid-cols-3 gap-4 auto-rows-max">
@@ -129,16 +131,28 @@ function Index() {
           <li key={assessment.assessmentId}>
             <Card className="h-full">
               <CardHeader>
-                <CardTitle>{assessment.name}</CardTitle>
-                <CardDescription>
-                  <Badge variant="secondary">
+                <CardTitle className="hover:underline">
+                  <Link to={`/assessments/${assessment.assessmentId}`}>
+                    {assessment.name}
+                  </Link>
+                </CardTitle>
+                <CardDescription className="flex items-center gap-6 flex-start">
+                  <span className="flex items-center gap-1">
+                    <MessageCircleQuestionMark
+                      size="18"
+                      className="inline-block text-green-600"
+                    />{' '}
                     {count(
                       'question',
                       'questions',
                       assessment.questions.length,
                     )}
-                  </Badge>
-                  <Badge variant="secondary" className="bg-green-100">
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Trophy
+                      size="18"
+                      className="inline-block text-yellow-600"
+                    />{' '}
                     {count(
                       'point',
                       'points',
@@ -149,26 +163,38 @@ function Index() {
                         0,
                       ),
                     )}
-                  </Badge>
+                  </span>
                 </CardDescription>
                 <CardAction className="flex items-center gap-2">
-                  <Button asChild size="sm" variant="secondary">
-                    <Link to={`/assessments/${assessment.assessmentId}`}>
-                      Submissions
-                    </Link>
-                  </Button>
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" aria-label="Archive">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Archive"
+                        className="-mt-2"
+                      >
                         <EllipsisVertical />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-40" align="end">
+                      <DropdownMenuItem asChild>
+                        <Link to={`/assessments/${assessment.assessmentId}`}>
+                          View submissions
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link
+                          to={`/assessments/${assessment.assessmentId}/submissions/new`}
+                        >
+                          New submission
+                        </Link>
+                      </DropdownMenuItem>
                       {assessment.archived && (
                         <DropdownMenuItem
                           onClick={() => unarchive(assessment.assessmentId)}
                         >
-                          Unarchive
+                          Re-open
                         </DropdownMenuItem>
                       )}
                       {!assessment.archived && (
@@ -182,11 +208,6 @@ function Index() {
                   </DropdownMenu>
                 </CardAction>
               </CardHeader>
-              <CardContent>
-                <p className="text-balance text-gray-700">
-                  {assessment.description}
-                </p>
-              </CardContent>
             </Card>
           </li>
         ))}
