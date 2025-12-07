@@ -22,8 +22,8 @@ import Layout from '../layouts/Layout.astro'
         <p>The project addresses the critical need for accessible educational technology solutions that can function in diverse global contexts, from rural schools with limited infrastructure to privacy-conscious institutions seeking to keep student data local.</p>
     </Section>
 
-    <Section id="literature-review" title="Literature Review" status="in progress">
-      <p>Our comprehensive literature review examines the current state of TinyML applications in educational contexts, analyzing the hardware and software ecosystem while identifying research gaps in offline AI assessment tools.</p>
+    <Section id="literature-review" title="Literature Review" status="completed">
+      <p>Our comprehensive literature review examined the current state of TinyML applications in educational and broader contexts, analyzing the hardware and software ecosystem while identifying research gaps in offline AI tools.</p>
       <h3>Research Questions</h3>
       <ul>
         <li>
@@ -60,8 +60,28 @@ import Layout from '../layouts/Layout.astro'
       <p>We are a developing a literature review results dashboard to present device cost range, power consumption, and TinyML applications.</p>
     </Section>
 
-    <Section id="proof-of-concept" title="Proof of Concept" status="in progress">
-        <p>We are developing a functional demonstration of automated grading using TinyML/Edge AI devices. The system captures images of student homework, converts handwriting to text using OCR, and evaluates responses against predefined rubric in offline mode with modest computational resources.</p>
+    <Section id="proof-of-concept" title="Proof of Concept" status="completed">
+      <p>
+        We developed a functional demonstration of automated grading using TinyML/Edge AI devices. The system captures images of student homework, conerts handwriting to text using OCR, and evaluates responses against a rubric. All of this works offline, in a web browser, using modest computational resources.
+      </p>
+      <h3>System Requirements</h3>
+      <ul>
+        <li>
+          <strong>Internet connection:</strong> required to download the PWA, after which it can be used offline.
+        </li>
+        <li>
+          <strong>Operating system:</strong> Windows 10 or 11, macOS 13+, Linux, or ChromeOS 16389.0.0+. ChromeOS is only supported on Chromebook Plus devices.
+        </li>
+        <li>
+          <strong>Browser:</strong> Google Chrome 142+. This is the only browser capable of running Gemini Nano models locally.
+        </li>
+        <li>
+          <strong>Hardware:</strong> Any desktop, laptop, tablet, or Chromebook Plus device capable of running the required browser and operating system. GPU is not required, but the device should have at least 4GB of VRAM, 16GB of RAM, and 4 CPU core. Mobile devices are not supported.
+        </li>
+      </ul>
+      <p>
+        The proof of concept is available as a Progressive Web App (PWA) that can be installed on supported devices. Visit the <a href="https://cs8903-odc-app.nkenyeres3.workers.dev/" rel="noopener norefferrer nofollow">PWA link</a> to try it out.
+      </p>
     </Section>
 
     <Section id="demo" title="Demo Video" status="coming soon">
