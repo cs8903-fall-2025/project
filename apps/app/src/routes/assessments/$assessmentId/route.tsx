@@ -14,9 +14,17 @@ export const Route = createFileRoute('/assessments/$assessmentId')({
 })
 
 function RouteComponent() {
-  const { assessmentId } = Route.useParams()
+  const { assessmentId, submissionId } = Route.useParams()
   const assessment = useFetchAssessment({ assessmentId })
   const matchRoute = useMatchRoute()
+  const isOnAssessment = matchRoute({
+    to: '/assessments/$assessmentId',
+    params: { assessmentId },
+  })
+  const isOnSubmission = matchRoute({
+    to: '/assessments/$assessmentId/submissions/$submissionId',
+    params: { assessmentId, submissionId },
+  })
   const isOnNewSubmission = matchRoute({
     to: '/assessments/$assessmentId/submissions/new',
     params: { assessmentId },
@@ -39,11 +47,20 @@ function RouteComponent() {
               {assessment.archived ? 'Archived' : 'Active'}
             </Badge>
           </div>
-          {!isOnNewSubmission && (
+          {isOnAssessment && (
             <div>
               <Button asChild>
                 <Link to={`/assessments/${assessmentId}/submissions/new`}>
                   Upload submission
+                </Link>
+              </Button>
+            </div>
+          )}
+          {isOnSubmission && !isOnNewSubmission && (
+            <div>
+              <Button variant="outline" asChild>
+                <Link to={`/assessments/${assessmentId}/submissions/new`}>
+                  Upload another submission
                 </Link>
               </Button>
             </div>

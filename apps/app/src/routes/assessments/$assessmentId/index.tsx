@@ -58,7 +58,7 @@ function RouteComponent() {
                   </TableCell>
                   <TableCell>
                     {submission.questions?.some((q) => q.needsReview) ? (
-                      <Badge variant="destructive">Needs Review</Badge>
+                      <Badge variant="destructive">Review</Badge>
                     ) : (
                       <Badge variant="secondary">Graded</Badge>
                     )}
@@ -68,7 +68,7 @@ function RouteComponent() {
                       <Link
                         to={`/assessments/${assessmentId}/submissions/${submission.submissionId}`}
                       >
-                        <Search /> Review
+                        <Search /> View
                       </Link>
                     </Button>
                   </TableCell>
