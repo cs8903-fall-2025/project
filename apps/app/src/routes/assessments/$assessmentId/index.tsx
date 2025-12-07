@@ -45,36 +45,39 @@ function RouteComponent() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {submissions.map((submission) => {
-              const { totalPoints, totalPointsAwarded, grade } = calculateGrade(
-                submission.questions,
-              )
-              return (
-                <TableRow key={submission.submissionId}>
-                  <TableCell>{submission.submissionId}</TableCell>
-                  <TableCell>{submission.studentId}</TableCell>
-                  <TableCell>
-                    {totalPoints}/{totalPointsAwarded} ({grade})
-                  </TableCell>
-                  <TableCell>
-                    {submission.questions?.some((q) => q.needsReview) ? (
-                      <Badge variant="destructive">Review</Badge>
-                    ) : (
-                      <Badge variant="secondary">Graded</Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button asChild size="sm" variant="outline">
-                      <Link
-                        to={`/assessments/${assessmentId}/submissions/${submission.submissionId}`}
-                      >
-                        <Search /> View
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+            {submissions
+              .sort((a, b) => {
+                return a.studentId.localeCompare(b.studentId)
+              })
+              .map((submission) => {
+                const { totalPoints, totalPointsAwarded, grade } =
+                  calculateGrade(submission.questions)
+                return (
+                  <TableRow key={submission.submissionId}>
+                    <TableCell>{submission.submissionId}</TableCell>
+                    <TableCell>{submission.studentId}</TableCell>
+                    <TableCell>
+                      {totalPoints}/{totalPointsAwarded} ({grade})
+                    </TableCell>
+                    <TableCell>
+                      {submission.questions?.some((q) => q.needsReview) ? (
+                        <Badge variant="destructive">Review</Badge>
+                      ) : (
+                        <Badge variant="secondary">Graded</Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button asChild size="sm" variant="outline">
+                        <Link
+                          to={`/assessments/${assessmentId}/submissions/${submission.submissionId}`}
+                        >
+                          <Search /> View
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
           </TableBody>
         </Table>
       </div>
