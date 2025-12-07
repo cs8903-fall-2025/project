@@ -40,9 +40,23 @@ function RootComponent() {
           </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-7xl py-6 px-6">
+      <main className="mx-auto max-w-7xl py-6 px-6 grow w-full">
         <Outlet />
       </main>
+      <footer className="mt-4 px-6">
+        <small className="block border-t border-gray-200 my-4 mx-auto max-w-7xl py-4 text-center text-sm text-muted-foreground w-full">
+          This is a proof of concept application developed for educational and
+          research purposes only. It is not intended for production use. Learn
+          more{' '}
+          <a
+            className="underline"
+            href="https://cs8903-odc-website.nkenyeres3.workers.dev"
+          >
+            about this project
+          </a>
+          .
+        </small>
+      </footer>
       <Toaster position="top-center" />
       <TanStackRouterDevtools position="bottom-right" />
     </>

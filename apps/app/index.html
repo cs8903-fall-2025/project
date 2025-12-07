@@ -1,13 +1,25 @@
 <!doctype html>
-<html lang="en" class="bg-white" style="min-height: 100%">
+<html lang="en" class="bg-white">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Autograder</title>
   </head>
-  <body>
-    <div id="root"></div>
+  <body
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    "
+  >
+    <div
+      id="root"
+      style="display: flex; height: 100%; flex-direction: column"
+    ></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
