@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useFetchSubmission } from '@/hooks/useFetchSubmission'
 
@@ -18,9 +18,16 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getSubmissionsCollection } from '@/collections/submissions'
+import { calculateGrade } from '@/lib/grade'
 
 export const Route = createFileRoute(
   '/assessments/$assessmentId/submissions/$submissionId',
@@ -44,6 +51,7 @@ type FormSchema = z.infer<typeof formSchema>
 function RouteComponent() {
   const { assessmentId, submissionId } = Route.useParams()
   const submission = useFetchSubmission({ submissionId })
+  const [studentId, setStudentId] = useState(submission?.studentId ?? '')
 
   const navigate = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,6 +78,17 @@ function RouteComponent() {
       )
     }
   }, [fields, replace, submission])
+
+  function onChangeStudentId(e: React.ChangeEvent<HTMLInputElement>) {
+    setStudentId(e.target.value)
+  }
+
+  function onChangeStudentIdCommit() {
+    const submissions = getSubmissionsCollection()
+    submissions.update(submissionId, (draft) => {
+      draft.studentId = studentId
+    })
+  }
 
   function onSubmit(values: FormSchema) {
     const submissions = getSubmissionsCollection()
@@ -99,6 +118,10 @@ function RouteComponent() {
     return <div>Submission is invalid</div>
   }
 
+  const { totalPoints, totalPointsAwarded, grade } = calculateGrade(
+    submission.questions,
+  )
+
   return (
     <article className="space-y-8">
       <header>
@@ -108,7 +131,29 @@ function RouteComponent() {
         <h3>Details</h3>
         <dl>
           <dt>Student ID:</dt>
-          <dd>{submission.studentId}</dd>
+          <dd>
+            <InputGroup>
+              <InputGroupInput
+                placeholder="Anonymous Student"
+                defaultValue={submission.studentId}
+                onChange={onChangeStudentId}
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={onChangeStudentIdCommit}
+                  size="xs"
+                >
+                  Change
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </dd>
+          <dt>Grade</dt>
+          <dd>
+            {totalPointsAwarded} / {totalPoints} ({grade})
+          </dd>
         </dl>
       </section>
       <section className="prose max-w-none">
@@ -123,7 +168,29 @@ function RouteComponent() {
           <TabsTrigger value="ocr">OCR Results</TabsTrigger>
           <TabsTrigger value="assessments">Assessment</TabsTrigger>
         </TabsList>
-        <TabsContent value="ocr"></TabsContent>
+        <TabsContent value="ocr">
+          <ul className="space-y-8">
+            {submission.files.map((file, index) => (
+              <li key={index}>
+                <Card className="p-4">
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <img
+                        src={file.image}
+                        alt={`Submitted file #${index + 1}`}
+                        className="width-full border border-gray-300 rounded-md"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold mb-2">Extracted Text:</h4>
+                      <pre className="whitespace-pre-wrap">{file.text}</pre>
+                    </div>
+                  </div>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </TabsContent>
         <TabsContent value="assessments">
           <Form {...form}>
             <form
@@ -201,6 +268,7 @@ function RouteComponent() {
                   />
                 </Card>
               ))}
+              <Button type="submit">Update</Button>
             </form>
           </Form>
         </TabsContent>
