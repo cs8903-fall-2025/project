@@ -48,14 +48,14 @@ function Index() {
     assessmentsCollection.update(id, (draft) => {
       draft.archived = true
     })
-    toast.success('Assessment archived')
+    toast.success('Assessment archived.')
   }
 
   function unarchive(id: string) {
     assessmentsCollection.update(id, (draft) => {
       draft.archived = false
     })
-    toast.success('Assessment re-opened')
+    toast.success('Assessment re-opened!')
   }
 
   return (
