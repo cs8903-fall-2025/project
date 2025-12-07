@@ -144,13 +144,13 @@ function RouteComponent() {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Context</FormLabel>
               <FormControl>
                 <Textarea {...field} />
               </FormControl>
               <FormDescription>
-                Optionally provide a description to add some additional context
-                for your records.
+                Optionally provide context to assisst with grading this
+                assignment.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -203,7 +203,7 @@ function RouteComponent() {
                     name={`questions.${index}.rules`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Rules</FormLabel>
+                        <FormLabel>Grading instructions</FormLabel>
                         <FormControl>
                           <Textarea {...field} className="bg-white" />
                         </FormControl>
