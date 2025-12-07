@@ -10,6 +10,7 @@
     "dev:app": "pnpm --filter=pwa dev",
     "dev:website": "pnpm --filter=website dev",
     "format": "prettier --write .",
+    "generate:assets": "pnpm --filter=pwa generate:assets",
     "generate:component": "cd apps/app && npx shadcn@latest add",
     "lint": "turbo lint",
     "lint:fix": "turbo lint -- --fix",
