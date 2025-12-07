@@ -28,7 +28,7 @@ export default defineConfig({
         name: 'Owligent',
         short_name: 'Owligent',
         description: 'An AI-powered assignment, homework, and test grader',
-        theme_color: '#ffffff',
+        theme_color: '#1447e6',
         icons: [
           {
             src: 'pwa-64x64.png',
