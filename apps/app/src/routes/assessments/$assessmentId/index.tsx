@@ -57,7 +57,7 @@ function RouteComponent() {
                     {totalPoints}/{totalPointsAwarded} ({grade})
                   </TableCell>
                   <TableCell>
-                    {submission.questions.some((q) => q.needsReview) ? (
+                    {submission.questions?.some((q) => q.needsReview) ? (
                       <Badge variant="destructive">Needs Review</Badge>
                     ) : (
                       <Badge variant="secondary">Graded</Badge>
