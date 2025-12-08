@@ -57,6 +57,7 @@ Other key pieces of technology used in this project:
 - [Vite PWA](https://vite-pwa-org.netlify.app/) for progressive web app support in the app
 - [RxDB](https://rxdb.info) for client-side database in the app
 - [Gemini Nano](https://developer.chrome.com/docs/ai) for client-side AI processing in the app
+- [Gemini Flash Image (Nano Banana)](https://aistudio.google.com/models/gemini-2-5-flash-image) for logo generation
 - [OCRS](https://github.com/robertknight/ocrs) for client-side OCR in the app
 - [shadcn/ui](https://ui.shadcn.com) for component library in the app
 - [RadixUI](https://www.radix-ui.com) for accessible UI primitives in the app
